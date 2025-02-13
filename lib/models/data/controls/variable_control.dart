@@ -1,0 +1,48 @@
+import 'package:vortex/models/data/controls/control.dart';
+import 'package:vortex/models/providers/provider_data.dart';
+
+class VariableControl extends Control {
+  double step;
+  double max;
+  double min;
+
+  VariableControl(
+      super.provider, super.source, super.name, this.min, this.max, this.step) {
+    currentValue = 0;
+  }
+
+  Future<void> increamentValue() async {
+    double newValue = (currentValue as double) + step;
+    newValue = double.parse(newValue.toStringAsFixed(2));
+
+    await setValue(newValue);
+  }
+
+  Future<void> decreamentValue() async {
+    double newValue = (currentValue as double) - step;
+    newValue = double.parse(newValue.toStringAsFixed(2));
+
+    await setValue(newValue);
+  }
+
+  @override
+  Future<void> getValue() async {
+    // currentValue = double.tryParse(await provider.getValue(ProviderData.Variable, source) as String);
+  }
+
+  @override
+  Future<void> setValue(Object val) async {
+
+    // do logic for min and max
+    double? newValue = switch (val) {
+      String() => double.tryParse(val),
+      double() => val,
+      _ => 0
+    };
+    
+    if (!(newValue == null || newValue > max || newValue < min)) {
+      currentValue = newValue;
+      await provider.setValue(ProviderData.variable, source, currentValue!);
+    }
+  }
+}
