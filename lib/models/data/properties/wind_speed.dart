@@ -44,6 +44,10 @@ class WindSpeed extends Property{
         value = _getStandardVal() *  1.609;
         unit = PropertyUnit.mpH;
         break;
+
+      case PropertyUnit.RPM:
+        value = _getStandardVal() * 8.8419;
+        unit = PropertyUnit.RPM;
       case PropertyUnit.kmHr:
       default:
         value = _getStandardVal();
@@ -74,6 +78,7 @@ class WindSpeed extends Property{
       PropertyUnit.ftS => "ft/s",
       PropertyUnit.mpH => "mph",
       PropertyUnit.kmHr => "km/hr",
+      PropertyUnit.RPM => "RPM",
       _ => " "
     };
 

@@ -24,7 +24,7 @@ class TurbineViewModel {
       WindSpeed(esp32Provider, ["5", "12"], "Wind Speed"),
       Pressure(esp32Provider, ["1", "2"], "Atm Pressure"),
       Temperature(esp32Provider, ["45", "50"], "Motor Temp"),
-      WindSpeed(esp32Provider, ["2", "6"], "Motor Speed", unit: PropertyUnit.mS),
+      WindSpeed(esp32Provider, ["2", "6"], "Motor Speed", unit: PropertyUnit.RPM),
     ];
 
     controls = [
