@@ -51,7 +51,11 @@ class Temperature extends Property {
   Future<double> getValue() async {
     value = double.parse(
         await provider.getValue(ProviderData.temperature, source) as String);
-    return value;
+
+            
+    convertUnit(unit);
+    value = double.parse(value.toStringAsFixed(2));
+       return value;
   }
 
   @override

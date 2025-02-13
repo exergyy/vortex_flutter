@@ -50,6 +50,10 @@ class Pressure extends Property {
   @override
   Future<double> getValue() async {
     value = double.parse(await provider.getValue(ProviderData.temperature, source) as String);
+        
+    convertUnit(unit);
+    value = double.parse(value.toStringAsFixed(2));
+    
     return value;
   }
 

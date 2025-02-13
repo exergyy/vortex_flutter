@@ -65,14 +65,16 @@ class WindSpeed extends Property{
     direction = double.parse(splitRes[1]); }
     else {
       value = double.parse(await provider.getValue(ProviderData.windSpeed, source) as String);
-
     }
+    
+    convertUnit(unit);
+    value = double.parse(value.toStringAsFixed(2));
+    
     return value;
   }
 
   @override
   String toString() {
-
     final strUnit = switch (unit) {
       PropertyUnit.mS => "m/s",
       PropertyUnit.ftS => "ft/s",
