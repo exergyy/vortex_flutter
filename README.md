@@ -1,3 +1,7 @@
 # vortex
 
-A new Flutter project.
+## Run the project on web
+
+```
+flutter run -d chrome --wasm
+```
