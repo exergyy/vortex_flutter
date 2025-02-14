@@ -137,7 +137,6 @@ class _WeatherMapViewState extends State<WeatherMapView> {
         },
       ),
 
-
       Padding(
         padding: AppStyle.padding,
         child: Align(
