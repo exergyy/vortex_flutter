@@ -12,7 +12,7 @@ class ChartTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomCardWidget(child: Padding(
       padding: AppStyle.padding,
-      child: PropertyChartWidget(property: Temperature(DummyProvider(), ["1", "4"], "Power")),
+      child: PropertyChartWidget(property: Temperature(DummyProvider(), ["3", "4"], "Power")),
     ));
   }
 }

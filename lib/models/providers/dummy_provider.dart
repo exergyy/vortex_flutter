@@ -6,10 +6,10 @@ import 'package:vortex/models/providers/provider_data.dart';
 class DummyProvider extends Provider{
   @override
   Future<Object> getValue(ProviderData type, List<String>? data) {
-    final max = int.parse(data![1]);
-    final min = int.parse(data[0]);
+    final max = double.parse(data![1]);
+    final min = double.parse(data[0]);
 
-    return Future<String>.delayed(Duration(seconds: 0), () => (min + Random().nextInt(max - min)).toString());
+    return Future<String>.delayed(Duration(seconds: 0), () => (min + Random().nextDouble() + Random().nextInt(max.toInt() - min.toInt())).toString());
   }
 
   @override

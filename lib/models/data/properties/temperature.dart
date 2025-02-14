@@ -32,7 +32,7 @@ class Temperature extends Property {
   void convertUnit(PropertyUnit to) {
     switch (to) {
       case PropertyUnit.celisus:
-        value = _getStandardVal() - 273.15;
+        value = _getStandardVal() + 273.15;
         unit = PropertyUnit.celisus;
         break;
       case PropertyUnit.fahrenheit:
@@ -55,7 +55,7 @@ class Temperature extends Property {
             
     convertUnit(unit);
     value = double.parse(value.toStringAsFixed(2));
-       return value;
+    return value;
   }
 
   @override
