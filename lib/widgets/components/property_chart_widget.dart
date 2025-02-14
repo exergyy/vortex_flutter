@@ -77,6 +77,14 @@ class _PropertyChartWidgetState extends State<PropertyChartWidget> {
                     showTitles: true,
                     getTitlesWidget: (value, meta) => value % 1 == 0? Text(value.toString()) : Container()
                   )
+                ),
+
+                
+                bottomTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    getTitlesWidget: (value, meta) => value % 1 == 0? Text(value.toString()) : Container()
+                  )
                 )
 
               ),
