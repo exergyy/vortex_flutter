@@ -5,16 +5,13 @@ import 'property.dart';
 import 'property_unit.dart';
 
 class Temperature extends Property {
-  
   @override
-  Stream<double>? get valueStream => 
-          Stream.periodic(Duration(seconds: updateInterval), (_) => getValue())
-                .asyncMap((v) async => await v)
-                .asBroadcastStream();
+  Stream<double>? get valueStream =>
+      Stream.periodic(Duration(seconds: updateInterval), (_) => getValue())
+          .asyncMap((v) async => await v)
+          .asBroadcastStream();
 
-  Temperature(super.provider, super.source, super.name) {
-    unit = PropertyUnit.celisus; // change based on settings
-  }
+  Temperature(super.provider, super.source, super.name, {super.unit = PropertyUnit.kelvin});
 
   double _getStandardVal() {
     switch (unit) {
@@ -52,7 +49,6 @@ class Temperature extends Property {
     value = double.parse(
         await provider.getValue(ProviderData.temperature, source) as String);
 
-            
     convertUnit(unit);
     value = double.parse(value.toStringAsFixed(2));
     return value;

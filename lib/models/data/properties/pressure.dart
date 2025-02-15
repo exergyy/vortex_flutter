@@ -7,14 +7,13 @@ import 'dart:math';
 class Pressure extends Property {
   bool isGauge = true;
   @override
-  Stream<double>? get valueStream => 
-          Stream.periodic(Duration(seconds: updateInterval), (_) => getValue())
-                .asyncMap((v) async => await v)
-                .asBroadcastStream();
+  Stream<double>? get valueStream =>
+      Stream.periodic(Duration(seconds: updateInterval), (_) => getValue())
+          .asyncMap((v) async => await v)
+          .asBroadcastStream();
 
-  Pressure(super.provider, super.source, super.name) {
-    unit = PropertyUnit.bar; // change based on settings
-  }
+  Pressure(super.provider, super.source, super.name,
+      {super.unit = PropertyUnit.bar});
 
   double _getStandardVal() {
     switch (unit) {
@@ -36,7 +35,7 @@ class Pressure extends Property {
         unit = PropertyUnit.kPa;
         break;
       case PropertyUnit.psi:
-        value = _getStandardVal()  * 14.50377;
+        value = _getStandardVal() * 14.50377;
         unit = PropertyUnit.psi;
         break;
       case PropertyUnit.bar:
@@ -49,17 +48,17 @@ class Pressure extends Property {
 
   @override
   Future<double> getValue() async {
-    value = double.parse(await provider.getValue(ProviderData.temperature, source) as String);
-        
+    value = double.parse(
+        await provider.getValue(ProviderData.temperature, source) as String);
+
     convertUnit(unit);
     value = double.parse(value.toStringAsFixed(2));
-    
+
     return value;
   }
 
   @override
   String toString() {
-
     final strUnit = switch (unit) {
       PropertyUnit.kPa => "kPa",
       PropertyUnit.psi => "psi",
