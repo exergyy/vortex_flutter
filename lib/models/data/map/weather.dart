@@ -17,12 +17,9 @@ class Weather {
   Future<void> updateInfo() async {
     if (await location.getLocationInfo()) {
       if (pressure == null || temperature == null || windSpeed == null) {
-        pressure = Pressure(
-            weatherProvider, [location.coordinates.toString()], "Atm Pressure");
-        temperature = Temperature(weatherProvider,
-            [location.coordinates.toString()], "Atm Temperature");
-        windSpeed = WindSpeed(
-            weatherProvider, [location.coordinates.toString()], "Wind Speed");
+        pressure = Pressure(weatherProvider, [location.coordinates.toString()], "Atm Pressure");
+        temperature = Temperature(weatherProvider, [location.coordinates.toString()], "Atm Temperature");
+        windSpeed = WindSpeed(weatherProvider, [location.coordinates.toString()], "Wind Speed");
       }
 
       await pressure!.getValue();
