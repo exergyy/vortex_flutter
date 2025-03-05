@@ -11,7 +11,8 @@ class Temperature extends Property {
           .asyncMap((v) async => await v)
           .asBroadcastStream();
 
-  Temperature(super.provider, super.source, super.name, {super.unit = PropertyUnit.kelvin});
+  Temperature(super.provider, super.source, super.name,
+      {super.unit = PropertyUnit.kelvin});
 
   double _getStandardVal() {
     switch (unit) {

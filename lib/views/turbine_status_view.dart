@@ -36,7 +36,7 @@ class TurbineStatusView extends StatelessWidget {
               // HeaderWidget(data: "Weather"),
 
               HeaderWidget(data: "Readings"),
-              InfoTile(properties: viewModel.turbine.esp32Readings!, numberOfColumns: 3,),
+              InfoTile(properties: viewModel.turbine.esp32Readings!),
 
               HeaderWidget(data: "Control"),
               ControlTile(controls: viewModel.turbine.controls!),

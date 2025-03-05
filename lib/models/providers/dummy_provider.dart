@@ -8,25 +8,23 @@ class DummyProvider extends Provider {
   Future<Object> getValue(ProviderData type, List<String>? data) {
     switch (type) {
       case ProviderData.toggle:
-      return Future.value(false);
+        return Future.value(false);
       case ProviderData.variable:
-      return Future.value(0.0);
+        return Future.value(0.0);
       default:
-      final max = double.parse(data![1]);
-      final min = double.parse(data[0]);
+        final max = double.parse(data![1]);
+        final min = double.parse(data[0]);
 
-      return Future<String>.delayed(
-        Duration(seconds: 0),
-        () => (min +
-          Random().nextDouble() +
-          Random().nextInt(max.toInt() - min.toInt()))
-        .toString());
+        return Future<String>.delayed(
+            Duration(seconds: 0),
+            () => (min +
+                    Random().nextDouble() +
+                    Random().nextInt(max.toInt() - min.toInt()))
+                .toString());
     }
   }
 
   @override
-  Future<void> setValue(
-    ProviderData type, List<String>? data, Object value) async {
-    print("value set");
+  Future<void> setValue(ProviderData type, List<String>? data, Object value) async {
   }
 }

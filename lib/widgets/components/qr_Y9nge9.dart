@@ -4,6 +4,7 @@ import '../../models/data/properties/pressure.dart';
 import '../../models/data/properties/property.dart';
 import '../../models/data/properties/temperature.dart';
 import '../../models/data/properties/wind_speed.dart';
+import 'dart:developer';
 
 class PropertyWidget extends StatefulWidget {
   final Property property;
@@ -31,7 +32,8 @@ class _PropertyWidgetState extends State<PropertyWidget> {
                 Text("Error")]);
           } else if (!s.hasData) {
             return Padding(padding: EdgeInsets.all(50),
-              child: SizedBox(width: 40, child: LinearProgressIndicator()));
+              child: SizedBox(
+                width: 50, child: LinearProgressIndicator()));
           } else {
             displayValue = widget.property.toString();
           }

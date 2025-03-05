@@ -31,9 +31,10 @@ class _ControlWidgetState extends State<ControlWidget> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      titleAlignment: ListTileTitleAlignment.threeLine,
       leading: Icon(_getControlIcon(widget.control)),
       title: Text(widget.control.name),
-      trailing: SizedBox(width: 200, child: _controlBuilder()));
+      trailing: SizedBox(width: 140, child: _controlBuilder()));
   }
 
   IconData _getControlIcon(Control control) {
@@ -71,7 +72,7 @@ class _ControlWidgetState extends State<ControlWidget> {
   Widget variableWidget(VariableControl control) {
     final controller = TextEditingController(text: control.currentValue.toString());
     return SizedBox(
-      width: 150,
+      width: 300,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
