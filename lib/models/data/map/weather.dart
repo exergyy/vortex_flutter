@@ -21,7 +21,6 @@ class Weather {
         temperature = Temperature(weatherProvider, [location.coordinates.toString()], "Atm Temperature");
         windSpeed = WindSpeed(weatherProvider, [location.coordinates.toString()], "Wind Speed");
       }
-
       await pressure!.getValue();
       await temperature!.getValue();
       await windSpeed!.getValue();

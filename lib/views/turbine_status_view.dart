@@ -12,7 +12,7 @@ class TurbineStatusView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  
+
     return Scaffold(
 
         appBar: AppBar(
@@ -32,14 +32,14 @@ class TurbineStatusView extends StatelessWidget {
                 height: MediaQuery.of(context).size.height * 0.3,
                 child: Image.asset("images/turbine2.gif", fit: BoxFit.cover,)
               ),
-              
+
               // HeaderWidget(data: "Weather"),
 
               HeaderWidget(data: "Readings"),
-              InfoTile(properties: viewModel.esp32Readings!, numberOfColumns: 3,),
+              InfoTile(properties: viewModel.turbine.esp32Readings!, numberOfColumns: 3,),
 
               HeaderWidget(data: "Control"),
-              ControlTile(controlsFunction: viewModel.getControls()),
+              ControlTile(controls: viewModel.turbine.controls!),
 
               HeaderWidget(data: "Charts"),
               ChartTile(),

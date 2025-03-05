@@ -4,16 +4,17 @@ import 'package:vortex/models/providers/weather_provider.dart';
 import 'property_unit.dart';
 import 'dart:math';
 
-class WindSpeed extends Property{
+class WindSpeed extends Property {
   double direction = 0;
 
   @override
-  Stream<double>? get valueStream => 
-          Stream.periodic(Duration(seconds: updateInterval), (_) => getValue())
-                .asyncMap((v) async => await v)
-                .asBroadcastStream();
+  Stream<double>? get valueStream =>
+      Stream.periodic(Duration(seconds: updateInterval), (_) => getValue())
+          .asyncMap((v) async => await v)
+          .asBroadcastStream();
 
-  WindSpeed(super.provider, super.source, super.name, {super.unit = PropertyUnit.kmHr});
+  WindSpeed(super.provider, super.source, super.name,
+      {super.unit = PropertyUnit.kmHr});
 
   double _getStandardVal() {
     switch (unit) {
@@ -22,7 +23,7 @@ class WindSpeed extends Property{
       case PropertyUnit.ftS:
         return value * 1.097;
       case PropertyUnit.mpH:
-        return value *  1.609;
+        return value * 1.609;
       case PropertyUnit.kmHr:
       default:
         return value;
@@ -41,7 +42,7 @@ class WindSpeed extends Property{
         unit = PropertyUnit.ftS;
         break;
       case PropertyUnit.mpH:
-        value = _getStandardVal() *  1.609;
+        value = _getStandardVal() * 1.609;
         unit = PropertyUnit.mpH;
         break;
 
@@ -59,17 +60,19 @@ class WindSpeed extends Property{
   @override
   Future<double> getValue() async {
     if (provider is WeatherProvider) {
-    var res = await provider.getValue(ProviderData.windSpeed, source) as String;
-    var splitRes = res.split(",");
-    value = double.parse(splitRes[0]);
-    direction = double.parse(splitRes[1]); }
-    else {
-      value = double.parse(await provider.getValue(ProviderData.windSpeed, source) as String);
+      var res =
+          await provider.getValue(ProviderData.windSpeed, source) as String;
+      var splitRes = res.split(",");
+      value = double.parse(splitRes[0]);
+      direction = double.parse(splitRes[1]);
+    } else {
+      value = double.parse(
+          await provider.getValue(ProviderData.windSpeed, source) as String);
     }
-    
+
     convertUnit(unit);
     value = double.parse(value.toStringAsFixed(2));
-    
+
     return value;
   }
 

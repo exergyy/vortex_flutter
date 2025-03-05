@@ -6,9 +6,9 @@ class ToggleControl extends Control {
   ToggleControl(super.provider, super.source, super.name);
 
   @override
-  Future<void> getValue() async {
-    currentValue = false;
-    //currentValue = await provider.getValue(ProviderData.Toggle, source) as bool;
+  Future<Object?> getValue() async {
+    currentValue = await provider.getValue(ProviderData.toggle, source);
+    return currentValue;
   }
 
   @override

@@ -23,24 +23,22 @@ class _VortexState extends State<Vortex> {
         useMaterial3: true,
         colorSchemeSeed: Colors.blue,
         brightness: Brightness.light,
-        ),
+      ),
       home: Scaffold(
         body: IndexedStack(
           index: viewModel.currentView,
-          children: viewModel.views),
-
+          children: viewModel.views
+        ),
         bottomNavigationBar:NavigationBar(
-
           selectedIndex: viewModel.currentView,
           destinations: [
-          NavigationDestination(icon: Icon(Icons.home_rounded), label: "Home"),
-          NavigationDestination(icon: Icon(Icons.map_rounded), label: "Map"),
+            NavigationDestination(icon: Icon(Icons.home_rounded), label: "Home"),
+            NavigationDestination(icon: Icon(Icons.map_rounded), label: "Map"),
           ],
           onDestinationSelected: (value) {
             setState(() {
-              viewModel.currentView = value;
+                viewModel.currentView = value;
             });
-
           },
         ),
       )

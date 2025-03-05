@@ -7,9 +7,7 @@ class VariableControl extends Control {
   double min;
 
   VariableControl(
-      super.provider, super.source, super.name, this.min, this.max, this.step) {
-    currentValue = 0;
-  }
+      super.provider, super.source, super.name, this.min, this.max, this.step);
 
   Future<void> increamentValue() async {
     double newValue = (currentValue as double) + step;
@@ -26,20 +24,19 @@ class VariableControl extends Control {
   }
 
   @override
-  Future<void> getValue() async {
-    // currentValue = double.tryParse(await provider.getValue(ProviderData.Variable, source) as String);
+  Future<Object?> getValue() async {
+    currentValue = await provider.getValue(ProviderData.variable, source) as double;
+    return currentValue;
   }
 
   @override
   Future<void> setValue(Object val) async {
-
-    // do logic for min and max
     double? newValue = switch (val) {
       String() => double.tryParse(val),
       double() => val,
       _ => 0
     };
-    
+
     if (!(newValue == null || newValue > max || newValue < min)) {
       currentValue = newValue;
       await provider.setValue(ProviderData.variable, source, currentValue!);

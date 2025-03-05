@@ -36,7 +36,8 @@ class _ControlWidgetState extends State<ControlWidget> {
             });
 
       case VariableControl():
-        final controller = TextEditingController(text: widget.control.currentValue.toString());
+        final controller =
+            TextEditingController(text: widget.control.currentValue.toString());
         return SizedBox(
           width: 150,
           child: Row(
@@ -95,11 +96,25 @@ class _ControlWidgetState extends State<ControlWidget> {
     }
   }
 
+  void _updateControl() async {
+    if (widget.control.currentValue == null) {
+      await widget.control.getValue();
+      setState(() {});
+    }
+  }
+
+  @override
+  void initState() {
+    _updateControl();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    print(widget.control.currentValue);
     return ListTile(
         leading: Icon(_getControlIcon(widget.control)),
         title: Text(widget.control.name),
-        trailing: _controlBuilder());
+        trailing: SizedBox(width: 200, child: _controlBuilder()));
   }
 }

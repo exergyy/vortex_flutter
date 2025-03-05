@@ -26,7 +26,6 @@ class InfoTileState extends State<InfoTile> {
       final size = i + count;
       res.add(properties.sublist(i,  size > properties.length? properties.length : size));
     }
-
     return res;
   }
 

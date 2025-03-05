@@ -7,6 +7,6 @@ abstract class Control {
   final Provider provider;
 
   Control(this.provider, this.source, this.name);
-  Future<void> getValue();
+  Future<Object?> getValue();
   Future<void> setValue(Object val);
 }

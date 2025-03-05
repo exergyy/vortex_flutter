@@ -1,4 +1,6 @@
 import 'package:vortex/models/data/map/weather.dart';
+import 'package:vortex/models/data/properties/property.dart';
+import 'package:vortex/models/data/controls/control.dart';
 
 enum TurbineType {
   darrieus,
@@ -9,7 +11,9 @@ enum TurbineType {
 class Turbine {
   final TurbineType type;
   double speed = 0;
-  Weather operatingConditions;
+  Weather? operatingConditions;
+  List<Property>? esp32Readings;
+  List<Control>? controls;
 
-  Turbine(this.type, this.operatingConditions);
+  Turbine(this.type);
 }

@@ -7,7 +7,7 @@ class WeatherProvider extends Provider{
 
   @override
   Future<Object> getValue(ProviderData type, List<String>? data) async {
-     final weather = WeatherApi(temperatureUnit: TemperatureUnit.celsius, windspeedUnit: WindspeedUnit.kmh);
+    final weather = WeatherApi(temperatureUnit: TemperatureUnit.celsius, windspeedUnit: WindspeedUnit.kmh);
     final coordinates = MapCoordinates.fromString(data![0]);
 
     // do elevation
