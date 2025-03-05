@@ -111,7 +111,6 @@ class _ControlWidgetState extends State<ControlWidget> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.control.currentValue);
     return ListTile(
         leading: Icon(_getControlIcon(widget.control)),
         title: Text(widget.control.name),
