@@ -1,4 +1,4 @@
-import '../../providers/provider.dart';
+import 'package:vortex/models/providers/provider.dart';
 
 abstract class Control {
   final String name;

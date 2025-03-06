@@ -13,16 +13,16 @@ class ChartTile extends StatelessWidget {
     return CustomCardWidget(
       child: Padding(
         padding: AppStyle.padding,
-             child: ListView.separated(
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: charts.length,
-        separatorBuilder: (context, index) => Divider(
-          thickness: 1,
-          color: Theme.of(context).colorScheme.outline,
-        ),
-        itemBuilder: (context, index) => ChartWidget(data: charts[index], visiblePointsCount: 10,),
-      )
+        child: ListView.separated(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: charts.length,
+          separatorBuilder: (context, index) => Divider(
+            thickness: 1,
+            color: Theme.of(context).colorScheme.outline,
+          ),
+          itemBuilder: (context, index) => ChartWidget(data: charts[index], visiblePointsCount: 10,),
+        )
     ));
   }
 }

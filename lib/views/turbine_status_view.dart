@@ -15,36 +15,36 @@ class TurbineStatusView extends StatelessWidget {
 
     return Scaffold(
 
-        appBar: AppBar(
-          title: Text(viewModel.title),
-          centerTitle: true,
+      appBar: AppBar(
+        title: Text(viewModel.title),
+        centerTitle: true,
+      ),
+
+      body: SingleChildScrollView(
+        padding: AppStyle.padding,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+
+            Container(
+              padding: AppStyle.padding,
+              height: MediaQuery.of(context).size.height * 0.3,
+              child: Image.asset("images/turbine2.gif", fit: BoxFit.cover,)
+            ),
+
+            // HeaderWidget(data: "Weather"),
+
+            HeaderWidget(data: "Readings"),
+            InfoTile(properties: viewModel.turbine.esp32Readings!),
+
+            HeaderWidget(data: "Control"),
+            ControlTile(controls: viewModel.turbine.controls!),
+
+            HeaderWidget(data: "Charts"),
+            ChartTile(viewModel.turbine.charts!),
+          ],
         ),
-
-        body: SingleChildScrollView(
-          padding: AppStyle.padding,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-
-              Container(
-                padding: AppStyle.padding,
-                height: MediaQuery.of(context).size.height * 0.3,
-                child: Image.asset("images/turbine2.gif", fit: BoxFit.cover,)
-              ),
-
-              // HeaderWidget(data: "Weather"),
-
-              HeaderWidget(data: "Readings"),
-              InfoTile(properties: viewModel.turbine.esp32Readings!),
-
-              HeaderWidget(data: "Control"),
-              ControlTile(controls: viewModel.turbine.controls!),
-
-              HeaderWidget(data: "Charts"),
-              ChartTile(viewModel.turbine.charts!),
-            ],
-          ),
-        ));
+    ));
   }
 }

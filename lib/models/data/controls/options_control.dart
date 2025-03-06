@@ -1,10 +1,6 @@
 import 'package:vortex/models/data/controls/control.dart';
 
-class OptionsControl extends Control { 
-
-  //@override
-  //bool get currentValue => super.currentValue as bool;
-
+class OptionsControl extends Control {
   OptionsControl(super.provider, super.source, super.name);
 
   @override

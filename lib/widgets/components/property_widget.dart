@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../app_style.dart';
-import '../../models/data/properties/pressure.dart';
-import '../../models/data/properties/property.dart';
-import '../../models/data/properties/temperature.dart';
-import '../../models/data/properties/wind_speed.dart';
+import 'package:vortex/app_style.dart';
+import 'package:vortex/models/data/properties/pressure.dart';
+import 'package:vortex/models/data/properties/property.dart';
+import 'package:vortex/models/data/properties/speed.dart';
+import 'package:vortex/models/data/properties/temperature.dart';
 
 class PropertyWidget extends StatefulWidget {
   final Property property;
@@ -22,7 +22,6 @@ class _PropertyWidgetState extends State<PropertyWidget> {
       child: StreamBuilder<double>(
         stream: widget.property.valueStream,
         builder: (c, s) {
-          String displayValue;
           if (s.hasError) {
             debugPrint("[ERROR] Couldn't fetch data of property (${widget.property.source}), ${s.error.toString()}");
             return Row(
@@ -32,8 +31,6 @@ class _PropertyWidgetState extends State<PropertyWidget> {
           } else if (!s.hasData) {
             return Padding(padding: EdgeInsets.all(50),
               child: SizedBox(width: 40, child: LinearProgressIndicator()));
-          } else {
-            displayValue = widget.property.toString();
           }
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -48,7 +45,7 @@ class _PropertyWidgetState extends State<PropertyWidget> {
                     Text(" ${widget.property.name}")
               ])),
               Padding(
-                padding: AppStyle.padding, child: Text(displayValue))
+                padding: AppStyle.padding, child: Text(widget.property.toString()))
           ]);
     }));
   }
@@ -57,7 +54,7 @@ class _PropertyWidgetState extends State<PropertyWidget> {
     return switch (prop) {
       Temperature() => Icons.thermostat,
       Pressure() => Icons.speed,
-      WindSpeed() => Icons.wind_power,
+      Speed() => Icons.wind_power,
       _ => Icons.no_sim_outlined
     };
   }

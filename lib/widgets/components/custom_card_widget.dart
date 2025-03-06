@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../app_style.dart';
+import 'package:vortex/app_style.dart';
 
 class CustomCardWidget extends StatelessWidget {
   final Widget child;
@@ -12,6 +12,6 @@ class CustomCardWidget extends StatelessWidget {
       child: Padding(
         padding: AppStyle.padding,
         child: child,
-      ));
+    ));
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vortex/models/data/controls/control.dart';
+import 'package:vortex/widgets/components/control_widget.dart';
 import 'package:vortex/widgets/components/custom_card_widget.dart';
-import '../components/control_widget.dart';
 
 class ControlTile extends StatelessWidget {
   final List<Control> controls;

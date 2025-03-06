@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:latlong2/latlong.dart';
-import '../components/property_widget.dart';
+import 'package:vortex/models/data/properties/property.dart';
 import 'package:vortex/widgets/components/custom_card_widget.dart';
-import '../../models/data/properties/property.dart';
-import 'dart:math';
+import 'package:vortex/widgets/components/property_widget.dart';
 
 class InfoTile extends StatefulWidget {
   final List<Property> properties;
@@ -42,7 +40,7 @@ class InfoTileState extends State<InfoTile> {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: splitedProperties[i]
-            .map((p) => PropertyWidget(property: p))
+            .map((p) => Expanded(child: PropertyWidget(property: p)))
             .toList(),
           );
     }));

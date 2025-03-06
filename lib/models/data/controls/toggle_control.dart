@@ -1,6 +1,5 @@
+import 'package:vortex/models/data/controls/control.dart';
 import 'package:vortex/models/providers/provider_data.dart';
-
-import './control.dart';
 
 class ToggleControl extends Control {
   ToggleControl(super.provider, super.source, super.name);

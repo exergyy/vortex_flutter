@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:vortex/models/data/chart/chart_point.dart';
-
-import '../properties/property.dart';
+import 'package:vortex/models/data/properties/property.dart';
 
 abstract class ChartData {
   final String title;

@@ -9,8 +9,8 @@ class PowerChart extends ChartData {
 
   @override
   Stream<ChartPoint>? get point =>
-      Stream.periodic(Duration(seconds: updateInterval), (_) => updatePoint())
-          .asyncMap((x) async => await x);
+  Stream.periodic(Duration(seconds: updateInterval), (_) => updatePoint())
+  .asyncMap((x) async => await x);
 
   PowerChart(super.title, super.sources);
 
@@ -26,7 +26,6 @@ class PowerChart extends ChartData {
         return _currentY;
       }
     }
-    print("Length: ${sources.length}");
     throw TypeError();
   }
 

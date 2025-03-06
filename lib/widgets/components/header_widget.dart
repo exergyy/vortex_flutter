@@ -12,13 +12,13 @@ class HeaderWidget extends StatelessWidget {
       padding: AppStyle.padding,
       margin: AppStyle.margin,
       alignment: Alignment.centerLeft,
-      child: Text( 
+      child: Text(
         data,
-        style: TextStyle(
+        style: const TextStyle(
           fontWeight: FontWeight.w900,
           fontSize: 20
         ),
-        ),
+      ),
     );
   }
 }

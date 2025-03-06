@@ -6,8 +6,7 @@ class VariableControl extends Control {
   double max;
   double min;
 
-  VariableControl(
-      super.provider, super.source, super.name, this.min, this.max, this.step);
+  VariableControl(super.provider, super.source, super.name, this.min, this.max, this.step);
 
   Future<void> increamentValue() async {
     double newValue = (currentValue as double) + step;

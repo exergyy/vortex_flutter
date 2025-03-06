@@ -61,7 +61,7 @@ class _ControlWidgetState extends State<ControlWidget> {
 
   Widget toggleWidget(ToggleControl control) {
     return Switch(
-      value: control.currentValue as bool,
+      value: control.currentValue == null ? false : control.currentValue as bool,
       activeColor: Theme.of(context).colorScheme.secondary,
       onChanged: (state) async {
         await widget.control.setValue(state);
@@ -81,7 +81,8 @@ class _ControlWidgetState extends State<ControlWidget> {
               await control.increamentValue();
               setState(() {});
             },
-            icon: Icon(Icons.add)),
+            icon: const Icon(Icons.add)
+          ),
           Flexible(
             child: TextField(
               controller: controller,
@@ -102,7 +103,7 @@ class _ControlWidgetState extends State<ControlWidget> {
               await control.decreamentValue();
               setState(() {});
             },
-            icon: Icon(Icons.remove))
+            icon: const Icon(Icons.remove))
         ],
       ),
     );
