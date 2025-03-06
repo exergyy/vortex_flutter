@@ -1,3 +1,4 @@
+import 'package:vortex/models/data/chart/power_chart.dart';
 import 'package:vortex/models/data/controls/toggle_control.dart';
 import 'package:vortex/models/data/controls/variable_control.dart';
 import 'package:vortex/models/data/properties/property_unit.dart';
@@ -5,13 +6,13 @@ import 'package:vortex/models/data/properties/wind_speed.dart';
 import 'package:vortex/models/providers/provider.dart';
 import '../models/data/properties/pressure.dart';
 import '../models/data/properties/temperature.dart';
+import 'package:vortex/models/data/properties/power.dart';
 import '../models/providers/dummy_provider.dart';
 import '../models/data/turbine.dart';
 
 class TurbineViewModel {
   final title = "Turbine Status";
   final Provider esp32Provider = DummyProvider();
-
   final Turbine turbine = Turbine(TurbineType.hybrid);
 
   TurbineViewModel() {
@@ -21,7 +22,8 @@ class TurbineViewModel {
       WindSpeed(esp32Provider, ["5", "12"], "Wind Speed"),
       Pressure(esp32Provider, ["1", "2"], "Atm Pressure"),
       Temperature(esp32Provider, ["45", "50"], "Motor Temp"),
-      WindSpeed(esp32Provider, ["2", "6"], "Motor Speed", unit: PropertyUnit.RPM),
+      WindSpeed(esp32Provider, ["2", "6"], "Motor Speed",
+          unit: PropertyUnit.RPM),
     ];
 
     turbine.controls = [
@@ -30,6 +32,10 @@ class TurbineViewModel {
       //TODO:
       //     (ControlType.Value, Icons.rotate_left_rounded, "Pitch Angle", 0),
       //     (ControlType.Options, Icons.speed, "Motor Speed", (["High", "Low"], [true, false]))
+    ];
+
+    turbine.charts = [
+      PowerChart("Chart Power", [Power(esp32Provider, ["4", "5"], "Power")]),
     ];
   }
 }

@@ -42,7 +42,7 @@ class TurbineStatusView extends StatelessWidget {
               ControlTile(controls: viewModel.turbine.controls!),
 
               HeaderWidget(data: "Charts"),
-              ChartTile(),
+              ChartTile(viewModel.turbine.charts!),
             ],
           ),
         ));

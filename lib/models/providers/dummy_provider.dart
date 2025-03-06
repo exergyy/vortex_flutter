@@ -11,6 +11,7 @@ class DummyProvider extends Provider {
         return Future.value(false);
       case ProviderData.variable:
         return Future.value(0.0);
+
       default:
         final max = double.parse(data![1]);
         final min = double.parse(data[0]);

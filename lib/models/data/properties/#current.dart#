@@ -1,0 +1,7 @@
+import 'package:vortex/models/data/properties/property.dart';
+
+class Current extends Property {
+
+}
+
+

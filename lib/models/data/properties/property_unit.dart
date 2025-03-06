@@ -1,6 +1,6 @@
 enum PropertyUnit {
   none,
-  
+
   // Temp
   celisus,
   kelvin,
@@ -21,5 +21,9 @@ enum PropertyUnit {
   // Level
   m,
   ft,
-  inch
+  inch,
+
+  // Power
+  kWatt,
+  hp
 }
