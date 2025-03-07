@@ -9,14 +9,25 @@ class PowerChart extends ChartData {
 
   @override
   Stream<ChartPoint>? get point =>
-  Stream.periodic(Duration(seconds: updateInterval), (_) => updatePoint())
-  .asyncMap((x) async => await x);
+      Stream.periodic(Duration(seconds: updateInterval), (_) => updatePoint())
+          .asyncMap((x) async => await x);
 
-  PowerChart(super.title, super.sources);
+  PowerChart(super.title, super.sources) {
+    updateInterval = _getInterval();
+  }
 
   @override
   Future<ChartPoint> updatePoint() async {
     return ChartPoint(await _updateX(), await _updateY());
+  }
+
+  int _getInterval() {
+    for (Property s in sources) {
+      if (s is Power) {
+        return s.updateInterval;
+      }
+    }
+    throw TypeError();
   }
 
   Future<double> _updateY() async {
