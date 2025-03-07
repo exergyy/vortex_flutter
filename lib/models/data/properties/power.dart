@@ -13,7 +13,7 @@ class Power extends Property {
   Stream<double>? get valueStream =>
       Stream.periodic(Duration(seconds: updateInterval), (_) => getValue())
           .asyncMap((v) async {
-        _recordValue();
+        _recordValue(interval: updateInterval);
         return await v;
       }).asBroadcastStream();
 
@@ -35,7 +35,9 @@ class Power extends Property {
       _recordedValues.clear();
       avgDailyPower = 0;
     }
-    if ((_recordedValues.isEmpty || (DateTime.now().hour - _lastRecord.hour) >= (interval / 3600)) && value != 0) {
+    if ((_recordedValues.isEmpty ||
+        (DateTime.now().millisecondsSinceEpoch - _lastRecord.millisecondsSinceEpoch) * 0.001 >= (interval))
+      && value != 0) {
         _lastRecord = DateTime.now();
         _recordedValues.add(value);
         avgDailyPower =

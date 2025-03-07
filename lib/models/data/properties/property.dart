@@ -10,7 +10,7 @@ abstract class Property {
   final String name;
 
   Stream<double>? valueStream;
-  int updateInterval = 1;
+  int updateInterval = 5;
 
   Property(this.provider, this.source, this.name, {this.unit = PropertyUnit.none});
 
