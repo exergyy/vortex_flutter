@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vortex/app_style.dart';
 import 'package:vortex/models/data/chart/chart_data.dart';
 import 'package:vortex/widgets/components/custom_card_widget.dart';
-import 'package:vortex/widgets/components/property_chart_widget.dart';
+import 'package:vortex/widgets/components/chart_widget.dart';
 
 class ChartTile extends StatelessWidget {
   final List<ChartData> charts;

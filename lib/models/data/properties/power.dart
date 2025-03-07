@@ -4,22 +4,42 @@ import 'property.dart';
 import 'property_unit.dart';
 
 class Power extends Property {
+  DateTime _lastRecord = DateTime.now();
+  final List<double> _recordedValues = [];
+  double avgDailyPower = 0;
+  bool displayAvg;
+
   @override
   Stream<double>? get valueStream =>
-  Stream.periodic(Duration(seconds: updateInterval), (_) => getValue())
-  .asyncMap((v) async => await v)
-  .asBroadcastStream();
+      Stream.periodic(Duration(seconds: updateInterval), (_) => getValue())
+          .asyncMap((v) async {
+        _recordValue();
+        return await v;
+      }).asBroadcastStream();
 
   Power(super.provider, super.source, super.name,
-    {super.unit = PropertyUnit.kWatt});
+      {super.unit = PropertyUnit.kWatt, this.displayAvg = true});
 
   double _getStandardVal() {
     switch (unit) {
       case PropertyUnit.hp:
-      return value / 1.341;
+        return value / 1.341;
       case PropertyUnit.kWatt:
       default:
-      return value;
+        return value;
+    }
+  }
+
+  void _recordValue({int interval = 3600}) {
+    if (DateTime.now().day - _lastRecord.day >= 1) {
+      _recordedValues.clear();
+      avgDailyPower = 0;
+    }
+    if ((_recordedValues.isEmpty || (DateTime.now().hour - _lastRecord.hour) >= (interval / 3600)) && value != 0) {
+        _lastRecord = DateTime.now();
+        _recordedValues.add(value);
+        avgDailyPower =
+            _recordedValues.reduce((a, b) => a + b) / _recordedValues.length;
     }
   }
 
@@ -27,21 +47,21 @@ class Power extends Property {
   void convertUnit(PropertyUnit to) {
     switch (to) {
       case PropertyUnit.hp:
-      value = _getStandardVal() * 1.341;
-      unit = PropertyUnit.hp;
-      break;
+        value = _getStandardVal() * 1.341;
+        unit = PropertyUnit.hp;
+        break;
       case PropertyUnit.kWatt:
       default:
-      value = _getStandardVal();
-      unit = PropertyUnit.kWatt;
-      break;
+        value = _getStandardVal();
+        unit = PropertyUnit.kWatt;
+        break;
     }
   }
 
   @override
   Future<double> getValue() async {
     value = double.parse(
-      await provider.getValue(ProviderData.power, source) as String);
+        await provider.getValue(ProviderData.power, source) as String);
     value = double.parse(value.toStringAsFixed(2));
 
     convertUnit(unit);
@@ -56,6 +76,6 @@ class Power extends Property {
       _ => " "
     };
 
-    return "$value $strUnit";
+    return displayAvg ? "$avgDailyPower $strUnit" : "$value $strUnit";
   }
 }

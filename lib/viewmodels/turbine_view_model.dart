@@ -14,16 +14,15 @@ class TurbineViewModel {
   final title = "Turbine Status";
   final Provider esp32Provider = DummyProvider();
   final Turbine turbine = Turbine(TurbineType.hybrid);
-
+  final power = Power(DummyProvider(), ["4", "5"], "Power");
   TurbineViewModel() {
     turbine.esp32Readings = [
-      Temperature(esp32Provider, ["40", "60"], "Bearing Temp"),
       Temperature(esp32Provider, ["40", "45"], "Atm Temp"),
       Speed(esp32Provider, ["5", "12"], "Wind Speed"),
       Pressure(esp32Provider, ["1", "2"], "Atm Pressure"),
       Temperature(esp32Provider, ["45", "50"], "Motor Temp"),
-      Speed(esp32Provider, ["2", "6"], "Motor Speed",
-        unit: PropertyUnit.RPM),
+      Speed(esp32Provider, ["2", "6"], "Motor Speed", unit: PropertyUnit.RPM),
+      power
     ];
 
     turbine.controls = [
@@ -35,8 +34,8 @@ class TurbineViewModel {
     ];
 
     turbine.charts = [
-      PowerChart("Power", [Power(esp32Provider, ["4", "5"], "Power")]),
-      PowerChart("Power", [Power(esp32Provider, ["4", "5"], "Power")]),
+      PowerChart("Power Output", [power]),
+      PowerChart("Power Output", [Power(esp32Provider, ["4", "5"], "Power")]),
     ];
   }
 }
