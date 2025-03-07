@@ -55,7 +55,6 @@ class _ChartWidgetState extends State<ChartWidget> {
                   axisNameWidget: Text(widget.data.title)),
                 rightTitles: AxisTitles(
                   axisNameSize: 20,
-                  axisNameWidget: Text(" "),
                   sideTitles: SideTitles(showTitles: false)),
                 leftTitles: AxisTitles(
                   sideTitles: SideTitles(
