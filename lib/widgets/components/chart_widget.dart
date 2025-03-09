@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:vortex/app_style.dart';
 import 'package:vortex/models/data/chart/chart_data.dart';
 import 'dart:async';
 
@@ -57,17 +58,18 @@ class _ChartWidgetState extends State<ChartWidget> {
                   axisNameSize: 20,
                   sideTitles: SideTitles(showTitles: false)),
                 leftTitles: AxisTitles(
+                  axisNameWidget: Text(widget.data.getAxisName(ChartDirection.left)),
                   sideTitles: SideTitles(
                     showTitles: true,
-                    getTitlesWidget: (value, meta) => value % 1 == 0
-                    ? Text(value.toString())
-                    : Container())),
+                    getTitlesWidget: (value, meta) => Padding(padding:AppStyle.padding,
+                      child: Text(widget.data.formatVisibleValue(ChartDirection.left, value))))),
                 bottomTitles: AxisTitles(
+                  axisNameWidget: Padding(padding:AppStyle.padding,
+                    child: Text(widget.data.getAxisName(ChartDirection.bottom))),
                   sideTitles: SideTitles(
                     showTitles: true,
-                    getTitlesWidget: (value, meta) => value % 1 == 0
-                    ? Text(value.toString())
-                    : Container()))),
+                    getTitlesWidget: (value, meta) => Padding(padding:AppStyle.padding,
+                      child: Text(widget.data.formatVisibleValue(ChartDirection.bottom, value)))))),
               lineTouchData: LineTouchData(
                 touchTooltipData: LineTouchTooltipData(
                   getTooltipColor: (touchedSpot) =>

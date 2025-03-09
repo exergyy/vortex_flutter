@@ -36,12 +36,12 @@ class Power extends Property {
       avgDailyPower = 0;
     }
     if ((_recordedValues.isEmpty ||
-        (DateTime.now().millisecondsSinceEpoch - _lastRecord.millisecondsSinceEpoch) * 0.001 >= (interval))
-      && value != 0) {
-        _lastRecord = DateTime.now();
-        _recordedValues.add(value);
-        avgDailyPower =
-            _recordedValues.reduce((a, b) => a + b) / _recordedValues.length;
+        (DateTime.now().millisecondsSinceEpoch - _lastRecord.millisecondsSinceEpoch) * 0.001 >= (interval)) &&
+        value != 0) {
+      _lastRecord = DateTime.now();
+      _recordedValues.add(value);
+      avgDailyPower = _recordedValues.reduce((a, b) => a + b) / _recordedValues.length;
+      avgDailyPower = double.parse(avgDailyPower.toStringAsFixed(2));
     }
   }
 
