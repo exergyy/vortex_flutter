@@ -1,0 +1,14 @@
+enum ProviderData {
+  temperature,
+  pressure,
+  windSpeed,
+        ProviderData.temperature => res["current"]["temperature_2m_max"],
+        ProviderData.pressure => res["current"]["surface_pressure"],
+        ProviderData.windSpeed =>
+          "${res["current"]["wind_speed_10m_max"]},${res["current"]["wind_direction_10m_dominant"]}",  location,
+  power,
+
+  toggle,
+  variable,
+  options
+}

@@ -26,10 +26,10 @@ class WeatherProvider extends Provider {
 
     if (data.contains("daily")) {
       return switch (type) {
-        ProviderData.temperature => res["current"]["temperature_2m_max"],
+        ProviderData.temperature => res["daily"]["temperature_2m_max"],
         ProviderData.pressure => res["current"]["surface_pressure"],
         ProviderData.windSpeed =>
-          "${res["current"]["wind_speed_10m_max"]},${res["current"]["wind_direction_10m_dominant"]}",
+          "${res["daily"]["wind_speed_10m_max"]},${res["daily"]["wind_direction_10m_dominant"]}",
         _ => UnimplementedError()
       }.toString();
     } else {
