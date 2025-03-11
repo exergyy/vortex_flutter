@@ -7,7 +7,7 @@ class HomeViewModel {
 
   final views = [
     TurbineStatusView(),
-    // WeatherMapView()
+    WeatherMapView()
   ];
 
 
