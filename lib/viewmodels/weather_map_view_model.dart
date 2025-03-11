@@ -14,8 +14,6 @@ class WeatherMapViewModel {
   List<Weather> forecast = [];
 
   WeatherMapViewModel() {
-    // lat 25 - 32
-    // long 30 - 32
     forecast = [
       Weather(weatherProvider, MapLocation(locationProvider, coordinates: MapCoordinates(30.0444, 31.2358))),
     ];
@@ -24,7 +22,7 @@ class WeatherMapViewModel {
 
   Future<List<Weather>> updateModel() async {
     for (var w in forecast) {
-      await w.updateInfo(); 
+      await w.updateInfo();
     }
     return forecast;
   }
@@ -39,6 +37,6 @@ class WeatherMapViewModel {
         forecast.add(Weather(weatherProvider, MapLocation(locationProvider, coordinates: MapCoordinates(i, j))));
       }
     }
-    
+
   }
 }
