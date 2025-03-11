@@ -17,14 +17,14 @@ class WeatherMapViewModel {
     // lat 25 - 32
     // long 30 - 32
     forecast = [
-      Weather(weatherProvider, MapLocation(locationProvider, coordinates: MapCoordinates(30.0444, 31.2358))),
+      Weather(weatherProvider, MapLocation(locationProvider, coordinates: MapCoordinates(30.0444, 31.2358)), true),
     ];
     focusedLocation = forecast[0];
   }
 
   Future<List<Weather>> updateModel() async {
     for (var w in forecast) {
-      await w.updateInfo(); 
+      await w.updateInfo();
     }
     return forecast;
   }
@@ -36,9 +36,9 @@ class WeatherMapViewModel {
     for(double i = lat - step; i <= lat + step; i += step) {
       for (double j = lng - step; j <= lng + step; j += step) {
         if (i == lat && j == lng) continue;
-        forecast.add(Weather(weatherProvider, MapLocation(locationProvider, coordinates: MapCoordinates(i, j))));
+        forecast.add(Weather(weatherProvider, MapLocation(locationProvider, coordinates: MapCoordinates(i, j)), true));
       }
     }
-    
+
   }
 }

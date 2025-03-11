@@ -149,7 +149,7 @@ class _WeatherMapViewState extends State<WeatherMapView> {
                     viewModel.weatherProvider,
                     MapLocation(viewModel.locationProvider,
                       name: locationData!.address,
-                      coordinates: MapCoordinates(locationData.latitude, locationData.longitude))));
+                      coordinates: MapCoordinates(locationData.latitude, locationData.longitude)), true));
                 viewModel.focusedLocation = viewModel.forecast.last;
                 viewModel.populateSurroundingLocations(viewModel.focusedLocation.location);
 

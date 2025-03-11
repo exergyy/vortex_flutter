@@ -9,17 +9,23 @@ class Weather {
   Temperature? temperature;
   Speed? windSpeed;
   Provider weatherProvider;
+  bool daily;
 
   final MapLocation location;
 
-  Weather(this.weatherProvider, this.location);
+  Weather(this.weatherProvider, this.location, this.daily);
 
   Future<void> updateInfo() async {
     if (await location.getLocationInfo()) {
       if (pressure == null || temperature == null || windSpeed == null) {
-        pressure = Pressure(weatherProvider, [location.coordinates.toString()], "Atm Pressure");
-        temperature = Temperature(weatherProvider, [location.coordinates.toString()], "Atm Temperature");
-        windSpeed = Speed(weatherProvider, [location.coordinates.toString()], "Wind Speed");
+        final data = [location.coordinates.toString()];
+        if (daily) {
+          data.add("daily");
+        }
+
+        pressure = Pressure(weatherProvider, data, "Atm Pressure");
+        temperature = Temperature(weatherProvider, data, "Atm Temperature");
+        windSpeed = Speed(weatherProvider, data, "Wind Speed");
       }
       await pressure!.getValue();
       await temperature!.getValue();
