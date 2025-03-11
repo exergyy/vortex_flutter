@@ -34,6 +34,7 @@ class Speed extends Property {
   void convertUnit(PropertyUnit to) {
     switch (to) {
       case PropertyUnit.mS:
+      // wrong forgot converting Hr
         value = _getStandardVal() * pow(10, 3);
         unit = PropertyUnit.mS;
         break;
@@ -45,7 +46,6 @@ class Speed extends Property {
         value = _getStandardVal() * 1.609;
         unit = PropertyUnit.mpH;
         break;
-
       case PropertyUnit.RPM:
         value = _getStandardVal() * 8.8419;
         unit = PropertyUnit.RPM;

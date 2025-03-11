@@ -71,7 +71,7 @@ class _WeatherMapViewState extends State<WeatherMapView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(children: [Text("Wind Speed: ${velocity.value}"),  Icon(dir)]),
-                      Text("Estimated Power: ${round(0.009 * pow(velocity.value, 3), decimals: 2)} KWh")
+                      Text(viewModel.getEstimatedPower(velocity))
                     ],
                   ),
             ),));

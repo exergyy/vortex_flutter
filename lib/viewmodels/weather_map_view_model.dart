@@ -1,6 +1,9 @@
+import 'dart:math';
+import 'package:latlong2/latlong.dart';
 import 'package:vortex/models/data/map/map_coordinates.dart';
 import 'package:vortex/models/data/map/map_location.dart';
 import 'package:vortex/models/data/map/weather.dart';
+import 'package:vortex/models/data/properties/speed.dart';
 import 'package:vortex/models/providers/location_provider.dart';
 import 'package:vortex/models/providers/provider.dart';
 import 'package:vortex/models/providers/weather_provider.dart';
@@ -17,7 +20,11 @@ class WeatherMapViewModel {
     // lat 25 - 32
     // long 30 - 32
     forecast = [
-      Weather(weatherProvider, MapLocation(locationProvider, coordinates: MapCoordinates(30.0444, 31.2358)), true),
+      Weather(
+          weatherProvider,
+          MapLocation(locationProvider,
+              coordinates: MapCoordinates(30.0444, 31.2358)),
+          true),
     ];
     focusedLocation = forecast[0];
   }
@@ -29,16 +36,32 @@ class WeatherMapViewModel {
     return forecast;
   }
 
-  void populateSurroundingLocations(MapLocation location, {double step = 0.05}) {
+  void populateSurroundingLocations(MapLocation location,
+      {double step = 0.05}) {
     var lat = location.coordinates!.x;
     var lng = location.coordinates!.y;
 
-    for(double i = lat - step; i <= lat + step; i += step) {
+    for (double i = lat - step; i <= lat + step; i += step) {
       for (double j = lng - step; j <= lng + step; j += step) {
         if (i == lat && j == lng) continue;
-        forecast.add(Weather(weatherProvider, MapLocation(locationProvider, coordinates: MapCoordinates(i, j)), true));
+        forecast.add(Weather(
+            weatherProvider,
+            MapLocation(locationProvider, coordinates: MapCoordinates(i, j)),
+            true));
       }
     }
+  }
 
+  String getEstimatedPower(Speed velocity) {
+    double cp = 0.4;
+    double mechEff = 0.8;
+    double aspectRatio = 1.1;
+    double height = 1.5;
+    double diameter = height / aspectRatio;
+    double projectedArea = height * diameter;
+    double airDensity = 1.2;
+
+    double constant = pow((5 / 18), 3).toDouble() * 0.5 * airDensity * projectedArea * cp * mechEff * 24 * 0.001;
+    return "Estimated Power: ${round(constant * pow(velocity.value, 3).toDouble(), decimals: 2)} KWh";
   }
 }
