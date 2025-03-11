@@ -9,24 +9,24 @@ class Speed extends Property {
 
   @override
   Stream<double>? get valueStream =>
-  Stream.periodic(Duration(seconds: updateInterval), (_) => getValue())
-  .asyncMap((v) async => await v)
-  .asBroadcastStream();
+      Stream.periodic(Duration(seconds: updateInterval), (_) => getValue())
+          .asyncMap((v) async => await v)
+          .asBroadcastStream();
 
   Speed(super.provider, super.source, super.name,
-    {super.unit = PropertyUnit.kmHr});
+      {super.unit = PropertyUnit.kmHr});
 
   double _getStandardVal() {
     switch (unit) {
       case PropertyUnit.mS:
-      return value / pow(10, 3);
+        return value / pow(10, 3);
       case PropertyUnit.ftS:
-      return value * 1.097;
+        return value * 1.097;
       case PropertyUnit.mpH:
-      return value * 1.609;
+        return value * 1.609;
       case PropertyUnit.kmHr:
       default:
-      return value;
+        return value;
     }
   }
 
@@ -34,26 +34,26 @@ class Speed extends Property {
   void convertUnit(PropertyUnit to) {
     switch (to) {
       case PropertyUnit.mS:
-      value = _getStandardVal() * pow(10, 3);
-      unit = PropertyUnit.mS;
-      break;
+        value = _getStandardVal() * pow(10, 3);
+        unit = PropertyUnit.mS;
+        break;
       case PropertyUnit.ftS:
-      value = _getStandardVal() * 1.097;
-      unit = PropertyUnit.ftS;
-      break;
+        value = _getStandardVal() * 1.097;
+        unit = PropertyUnit.ftS;
+        break;
       case PropertyUnit.mpH:
-      value = _getStandardVal() * 1.609;
-      unit = PropertyUnit.mpH;
-      break;
+        value = _getStandardVal() * 1.609;
+        unit = PropertyUnit.mpH;
+        break;
 
       case PropertyUnit.RPM:
-      value = _getStandardVal() * 8.8419;
-      unit = PropertyUnit.RPM;
+        value = _getStandardVal() * 8.8419;
+        unit = PropertyUnit.RPM;
       case PropertyUnit.kmHr:
       default:
-      value = _getStandardVal();
-      unit = PropertyUnit.kmHr;
-      break;
+        value = _getStandardVal();
+        unit = PropertyUnit.kmHr;
+        break;
     }
   }
 
@@ -61,13 +61,13 @@ class Speed extends Property {
   Future<double> getValue() async {
     if (provider is WeatherProvider) {
       var res =
-      await provider.getValue(ProviderData.windSpeed, source) as String;
+          await provider.getValue(ProviderData.windSpeed, source) as String;
       var splitRes = res.split(",");
       value = double.parse(splitRes[0]);
       direction = double.parse(splitRes[1]);
     } else {
       value = double.parse(
-        await provider.getValue(ProviderData.windSpeed, source) as String);
+          await provider.getValue(ProviderData.windSpeed, source) as String);
     }
 
     convertUnit(unit);

@@ -2,6 +2,7 @@ import 'package:vortex/models/data/map/map_coordinates.dart';
 import 'package:vortex/models/providers/provider.dart';
 import 'package:open_meteo/open_meteo.dart';
 import 'package:vortex/models/providers/provider_data.dart';
+import 'dart:math';
 
 class WeatherProvider extends Provider {
   @override
@@ -16,7 +17,6 @@ class WeatherProvider extends Provider {
         .requestJson(latitude: coordinates.x, longitude: coordinates.y, daily: {
       WeatherDaily.temperature_2m_max,
       WeatherDaily.wind_speed_10m_max,
-      WeatherDaily.wind_direction_10m_dominant
     }, current: {
       WeatherCurrent.temperature_2m,
       WeatherCurrent.wind_speed_10m,
@@ -26,10 +26,10 @@ class WeatherProvider extends Provider {
 
     if (data.contains("daily")) {
       return switch (type) {
-        ProviderData.temperature => res["daily"]["temperature_2m_max"],
+        ProviderData.temperature => res["daily"]["temperature_2m_max"].map((e) => e.toDouble()).toList()[0],
         ProviderData.pressure => res["current"]["surface_pressure"],
         ProviderData.windSpeed =>
-          "${res["daily"]["wind_speed_10m_max"]},${res["daily"]["wind_direction_10m_dominant"]}",
+          "${res["daily"]["wind_speed_10m_max"].map((e) => e.toDouble()).toList()[0]},${res["current"]["wind_direction_10m"]}",
         _ => UnimplementedError()
       }.toString();
     } else {
