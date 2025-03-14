@@ -7,7 +7,7 @@ import 'package:vortex/models/data/map/map_location.dart';
 import 'package:vortex/models/data/map/weather.dart';
 import 'package:vortex/viewmodels/weather_map_view_model.dart';
 import 'package:flutter_location_search/flutter_location_search.dart';
-import 'package:vortex/widgets/components/location_widget.dart';
+import 'package:vortex/widgets/components/weather_location_widget.dart';
 
 class WeatherMapView extends StatefulWidget {
   const WeatherMapView({super.key});
