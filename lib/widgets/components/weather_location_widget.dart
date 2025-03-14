@@ -4,18 +4,21 @@ import 'package:latlong2/latlong.dart';
 import 'package:vortex/app_style.dart';
 import 'package:vortex/models/data/map/weather.dart';
 import 'package:vortex/models/data/properties/speed.dart';
+import 'package:vortex/models/data/turbine.dart';
 
 class WeatherLocationWidget extends StatefulWidget {
   final Weather? weather;
   final double iconSize;
+  final Turbine turbine;
 
-  const WeatherLocationWidget({super.key, required this.weather, required this.iconSize});
+  const WeatherLocationWidget({super.key, required this.weather, required this.iconSize, required this.turbine});
 
   @override
   State<StatefulWidget> createState() => _WeatherLocationWidgetState();
 }
 
 class _WeatherLocationWidgetState extends State<WeatherLocationWidget> {
+  double requiredEnergy = 0;
 
   IconData _windDirectionIcon(double? angle) {
     if (angle == null) {
@@ -39,40 +42,69 @@ class _WeatherLocationWidgetState extends State<WeatherLocationWidget> {
     }
   }
 
-  double _getEstimatedPower(Speed velocity) {
-    double cp = 0.4;
-    double mechEff = 0.8;
-    double aspectRatio = 1.1;
-    double height = 1.5;
-    double diameter = height / aspectRatio;
-    double projectedArea = height * diameter;
-    double airDensity = 1.2;
+  void _getEstimatedDimensions(Speed windSpeed, double? input) {
+    if (input == null || input < 0) return;
 
-    double constant = pow((5 / 18), 3).toDouble() * 0.5 * airDensity * projectedArea * cp * mechEff * 24 * 0.001;
-    return round(constant * pow(velocity.value, 3).toDouble(), decimals: 2);
+    requiredEnergy = input;
+    final t = widget.turbine;
+    double airDensity = 1.2;
+    double constant = pow((5 / 18), 3).toDouble() * 0.5 * airDensity * t.cp * t.mechEff * 24 * 0.001;
+    double projectedArea = requiredEnergy / (constant * pow(windSpeed.value, 3).toDouble());
+    t.diameter = round(sqrt(projectedArea / t.aspectRatio), decimals: 2);
+    t.height = round(t.aspectRatio * t.diameter, decimals: 2);
   }
 
-  void _buildWindow(Speed? velocity, IconData dir) {
-    if (velocity != null) {
+  void _buildWindow(Speed? windSpeed, IconData dir) {
+    final inputController = TextEditingController(text: requiredEnergy.toString());
+    if (windSpeed != null) {
       showDialog(
         context: context,
-        builder: (c) => AlertDialog(
-          title: const Text("Details"),
-          content: SizedBox(
-            height: 50,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(children: [
-                    Text("Wind Speed: ${velocity.value}"),
-                    Icon(dir)
-                ]),
-                Text("Estimated Power: ${_getEstimatedPower(velocity)} kWh")
-              ],
+        builder: (c) => StatefulBuilder(
+          builder: (c, setState) => AlertDialog(
+            title: const Text("Details"),
+            content: SizedBox(
+              height: MediaQuery.of(context).size.height * 0.3,
+              width: MediaQuery.of(context).size.width * 0.8,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(children: [
+                      Text("Wind Speed: ${windSpeed.value}"),
+                      Icon(dir)
+                  ]),
+
+                  ListTile(
+                    title: Text("Required Annual Energy:"),
+                    trailing:
+                    SizedBox(
+                      width: 50,
+                      child:
+                      TextField(
+                        controller: inputController,
+                        textAlign: TextAlign.center,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          contentPadding: AppStyle.padding,
+                        ),
+                        onChanged: (v) {
+                          _getEstimatedDimensions(windSpeed, double.tryParse(v));
+                          setState(() {});
+                        },
+                    )),
+                  ),
+
+                  Text("Recommended Turbine:"),
+                  Text("Type: ${widget.turbine.type.toString().split('.')[1]}"),
+                  Text("Height: ${widget.turbine.height}"),
+                  Text("Diameter: ${widget.turbine.diameter}"),
+                ],
+              ),
             ),
-          ),
-      ));
+          )
+        )
+      );
     }
   }
 
@@ -86,8 +118,7 @@ class _WeatherLocationWidgetState extends State<WeatherLocationWidget> {
     return GestureDetector(
       onTap: () => _buildWindow(windSpeed, dir),
       child: Container(
-        decoration: BoxDecoration(
-          color: Colors.blueAccent, borderRadius: AppStyle.borderRadius),
+        decoration: BoxDecoration(color: Colors.blueAccent, borderRadius: AppStyle.borderRadius),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -99,7 +130,8 @@ class _WeatherLocationWidgetState extends State<WeatherLocationWidget> {
               style: TextStyle(
                 decoration: TextDecoration.none,
                 color: Colors.white,
-                fontSize: iconSize)),
+                fontSize: iconSize)
+            ),
             Icon(dir, color: Colors.white, size: iconSize)
           ],
         ),
