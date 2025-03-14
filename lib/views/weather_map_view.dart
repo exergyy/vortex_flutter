@@ -5,10 +5,9 @@ import 'package:vortex/app_style.dart';
 import 'package:vortex/models/data/map/map_coordinates.dart';
 import 'package:vortex/models/data/map/map_location.dart';
 import 'package:vortex/models/data/map/weather.dart';
-import 'package:vortex/models/data/properties/speed.dart';
 import 'package:vortex/viewmodels/weather_map_view_model.dart';
 import 'package:flutter_location_search/flutter_location_search.dart';
-import 'dart:math';
+import 'package:vortex/widgets/components/location_widget.dart';
 
 class WeatherMapView extends StatefulWidget {
   const WeatherMapView({super.key});
@@ -22,81 +21,18 @@ class _WeatherMapViewState extends State<WeatherMapView> {
   final _mapController = MapController();
   double _mapZoom = 14;
 
-  IconData directionToIcon(double? angle) {
-    if(angle == null) {
-      return Icons.question_mark_rounded;
+  Marker buildMarker(Weather? weather) {
+    if (weather == null || weather.location.coordinates == null) {
+      return Marker(point: LatLng(0, 0), child: SizedBox());
     }
-    else if (angle >= 337.5 || angle < 22.5) {
-      return Icons.arrow_upward;
-    } else if (angle >= 22.5 && angle < 67.5) {
-      return Icons.north_east;
-    } else if (angle >= 67.5 && angle < 112.5) {
-      return Icons.arrow_forward;
-    } else if (angle >= 112.5 && angle < 157.5) {
-      return Icons.south_east;
-    } else if (angle >= 157.5 && angle < 202.5) {
-      return Icons.arrow_downward;
-    } else if (angle >= 202.5 && angle < 247.5) {
-      return Icons.south_west;
-    } else if (angle >= 247.5 && angle < 292.5) {
-      return Icons.arrow_back;
-    } else {
-      return Icons.north_west;
-    }
-  }
 
-  Marker buildMarker(Speed? velocity, MapCoordinates? coordinates) {
-    if (coordinates == null) return Marker(point: LatLng(0, 0), child: SizedBox());
-
-    var dir = directionToIcon(velocity?.direction);
-
-    final markerWidth = 120 * _mapZoom * 0.1;
-    final markerHeight = 20 * _mapZoom * 0.1;
-    final iconSize = 10 * _mapZoom * 0.1;
 
     return Marker(
-      point: coordinates.toLatLng(),
-      width: markerWidth,
-      height: markerHeight,
-      child: GestureDetector(
-        onTap: () {
-          if (velocity != null) {
-            showDialog(context: context,
-              builder: (c) => AlertDialog(
-                title: const Text("Details"),
-                content: SizedBox(
-                  height: 50,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(children: [Text("Wind Speed: ${velocity.value}"),  Icon(dir)]),
-                      Text(viewModel.getEstimatedPower(velocity))
-                    ],
-                  ),
-            ),));
-        }},
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.blueAccent, borderRadius: AppStyle.borderRadius),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(Icons.wind_power, color: Colors.white, size: iconSize),
-              Text(
-                velocity?.toString() ?? "Loading",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  decoration: TextDecoration.none,
-                  color: Colors.white,
-                  fontSize: iconSize),
-              ),
-              Icon(dir, color: Colors.white, size: iconSize)
-            ],
-          ),
-        ),
-    ));
+      width: 120 * _mapZoom * 0.1,
+      height: 20 * _mapZoom * 0.1,
+      point: weather.location.coordinates!.toLatLng(),
+      child: WeatherLocationWidget(weather: weather, iconSize: 10 * _mapZoom * 0.1)
+    );
   }
 
   @override
@@ -126,8 +62,7 @@ class _WeatherMapViewState extends State<WeatherMapView> {
                 TileLayer(urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'),
                 MarkerLayer(
                   markers: snapshot.data!
-                  .map((w) => buildMarker(
-                      w.windSpeed, w.location.coordinates))
+                  .map((w) => buildMarker(w))
                   .toList())
               ],
 

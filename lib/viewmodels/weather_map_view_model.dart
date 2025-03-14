@@ -51,17 +51,4 @@ class WeatherMapViewModel {
       }
     }
   }
-
-  String getEstimatedPower(Speed velocity) {
-    double cp = 0.4;
-    double mechEff = 0.8;
-    double aspectRatio = 1.1;
-    double height = 1.5;
-    double diameter = height / aspectRatio;
-    double projectedArea = height * diameter;
-    double airDensity = 1.2;
-
-    double constant = pow((5 / 18), 3).toDouble() * 0.5 * airDensity * projectedArea * cp * mechEff * 24 * 0.001;
-    return "Estimated Power: ${round(constant * pow(velocity.value, 3).toDouble(), decimals: 2)} KWh";
-  }
 }
