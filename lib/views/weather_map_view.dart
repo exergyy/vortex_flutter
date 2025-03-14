@@ -5,6 +5,7 @@ import 'package:vortex/app_style.dart';
 import 'package:vortex/models/data/map/map_coordinates.dart';
 import 'package:vortex/models/data/map/map_location.dart';
 import 'package:vortex/models/data/map/weather.dart';
+import 'package:vortex/models/data/turbine.dart';
 import 'package:vortex/viewmodels/weather_map_view_model.dart';
 import 'package:flutter_location_search/flutter_location_search.dart';
 import 'package:vortex/widgets/components/weather_location_widget.dart';
@@ -31,7 +32,7 @@ class _WeatherMapViewState extends State<WeatherMapView> {
       width: 120 * _mapZoom * 0.1,
       height: 20 * _mapZoom * 0.1,
       point: weather.location.coordinates!.toLatLng(),
-      child: WeatherLocationWidget(weather: weather, iconSize: 10 * _mapZoom * 0.1)
+      child: WeatherLocationWidget(weather: weather, iconSize: 10 * _mapZoom * 0.1, turbine: viewModel.turbine,)
     );
   }
 

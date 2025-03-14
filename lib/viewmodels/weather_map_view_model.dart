@@ -4,6 +4,7 @@ import 'package:vortex/models/data/map/map_coordinates.dart';
 import 'package:vortex/models/data/map/map_location.dart';
 import 'package:vortex/models/data/map/weather.dart';
 import 'package:vortex/models/data/properties/speed.dart';
+import 'package:vortex/models/data/turbine.dart';
 import 'package:vortex/models/providers/location_provider.dart';
 import 'package:vortex/models/providers/provider.dart';
 import 'package:vortex/models/providers/weather_provider.dart';
@@ -12,6 +13,7 @@ class WeatherMapViewModel {
   final String title = "Wind Speed Map";
   final Provider weatherProvider = WeatherProvider();
   final Provider locationProvider = LocationProvider();
+  final Turbine turbine = Turbine(TurbineType.hybrid);
 
   late Weather focusedLocation;
   List<Weather> forecast = [];

@@ -7,7 +7,14 @@ enum TurbineType { darrieus, savonius, hybrid }
 
 class Turbine {
   final TurbineType type;
+
   double speed = 0;
+  double cp = 0.4;
+  double aspectRatio = 1.1;
+  double mechEff = 0.8;
+  double height = 0;
+  double diameter = 0;
+
   Weather? operatingConditions;
   List<Property>? esp32Readings;
   List<Control>? controls;
