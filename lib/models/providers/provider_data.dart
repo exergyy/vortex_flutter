@@ -4,6 +4,8 @@ enum ProviderData {
   windSpeed,
   location,
   power,
+  elevation,
+  length,
 
   toggle,
   variable,

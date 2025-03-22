@@ -1,4 +1,5 @@
 import 'package:vortex/models/data/map/map_location.dart';
+import 'package:vortex/models/data/properties/length.dart';
 import 'package:vortex/models/data/properties/pressure.dart';
 import 'package:vortex/models/data/properties/temperature.dart';
 import 'package:vortex/models/data/properties/speed.dart';
@@ -8,6 +9,8 @@ class Weather {
   Pressure? pressure;
   Temperature? temperature;
   Speed? windSpeed;
+  Length? elevation;
+
   Provider weatherProvider;
   bool daily;
 
@@ -17,12 +20,12 @@ class Weather {
 
   Future<void> updateInfo() async {
     if (await location.getLocationInfo()) {
-      if (pressure == null || temperature == null || windSpeed == null) {
+      if (pressure == null || temperature == null || windSpeed == null || elevation == null) {
         final data = [location.coordinates.toString()];
         if (daily) {
           data.add("daily");
         }
-
+        elevation = Length(weatherProvider, data, "Elevation");
         pressure = Pressure(weatherProvider, data, "Atm Pressure");
         temperature = Temperature(weatherProvider, data, "Atm Temperature");
         windSpeed = Speed(weatherProvider, data, "Wind Speed");
