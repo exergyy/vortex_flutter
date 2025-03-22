@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:vortex/app_style.dart';
 import 'package:vortex/models/data/map/weather.dart';
+import 'package:vortex/models/data/properties/length.dart';
 import 'package:vortex/models/data/properties/speed.dart';
 import 'package:vortex/models/data/turbine.dart';
 
 class WeatherLocationWidget extends StatefulWidget {
-  final Weather? weather;
+  final Weather weather;
   final double iconSize;
   final Turbine turbine;
 
@@ -42,10 +43,7 @@ class _WeatherLocationWidgetState extends State<WeatherLocationWidget> {
     }
   }
 
-  void _getEstimatedDimensions(Speed windSpeed, double? input) {
-    if (input == null || input < 0) return;
-
-    requiredEnergy = input;
+  void _getEstimatedDimensions(Speed windSpeed) {
     final t = widget.turbine;
     double airDensity = 1.2;
     double constant = pow((5 / 18), 3).toDouble() * 0.5 * airDensity * t.cp * t.mechEff * 24 * 0.001;
@@ -54,9 +52,11 @@ class _WeatherLocationWidgetState extends State<WeatherLocationWidget> {
     t.height = round(t.aspectRatio * t.diameter, decimals: 2);
   }
 
-  void _buildWindow(Speed? windSpeed, IconData dir) {
-    final inputController = TextEditingController(text: requiredEnergy.toString());
-    if (windSpeed != null) {
+  void _buildWindow(Speed? windSpeed, IconData dir, Length? elevation) {
+    final energyController = TextEditingController(text: requiredEnergy.toString());
+    final elevController = TextEditingController(text: widget.weather.elevation?.value.toString());
+
+    if (windSpeed != null && elevation != null) {
       showDialog(
         context: context,
         builder: (c) => StatefulBuilder(
@@ -70,7 +70,7 @@ class _WeatherLocationWidgetState extends State<WeatherLocationWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(children: [
-                      Text("Wind Speed: ${windSpeed.value}"),
+                      Text("Wind Speed: ${windSpeed!.value}"),
                       Icon(dir)
                   ]),
 
@@ -81,7 +81,7 @@ class _WeatherLocationWidgetState extends State<WeatherLocationWidget> {
                       width: 50,
                       child:
                       TextField(
-                        controller: inputController,
+                        controller: energyController,
                         textAlign: TextAlign.center,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
@@ -89,12 +89,42 @@ class _WeatherLocationWidgetState extends State<WeatherLocationWidget> {
                           contentPadding: AppStyle.padding,
                         ),
                         onChanged: (v) {
-                          _getEstimatedDimensions(windSpeed, double.tryParse(v));
+                          double? input = double.tryParse(v);
+                          if (input == null || input < 0) return;
+                          requiredEnergy = input;
+
+                          _getEstimatedDimensions(windSpeed!);
                           setState(() {});
                         },
                     )),
                   ),
 
+                  ListTile(
+                    title: Text("Elevation:"),
+                    trailing:
+                    SizedBox(
+                      width: 50,
+                      child:
+                      TextField(
+                        controller: elevController,
+                        textAlign: TextAlign.center,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          contentPadding: AppStyle.padding,
+                        ),
+                        onChanged: (v) async {
+                          double? input = double.tryParse(v);
+                          if (input == null || input < 0) return;
+                          await widget.weather.changeElevation(input);
+                          await widget.weather.updateInfo();
+                          windSpeed = widget.weather.windSpeed;
+
+                          _getEstimatedDimensions(windSpeed!);
+                          setState(() {});
+                        },
+                    )),
+                  ),
 
                   Text("Recommended Turbine:"),
                   Text("Type: ${widget.turbine.type.toString().split('.')[1]}"),
@@ -112,12 +142,13 @@ class _WeatherLocationWidgetState extends State<WeatherLocationWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final windSpeed = widget.weather?.windSpeed;
+    final windSpeed = widget.weather.windSpeed;
+    final elevation = widget.weather.elevation;
     final iconSize = widget.iconSize;
     final dir = _windDirectionIcon(windSpeed?.direction);
 
     return GestureDetector(
-      onTap: () => _buildWindow(windSpeed, dir),
+      onTap: () => _buildWindow(windSpeed, dir, elevation),
       child: Container(
         decoration: BoxDecoration(color: Colors.blueAccent, borderRadius: AppStyle.borderRadius),
         child: Row(

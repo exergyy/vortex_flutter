@@ -13,17 +13,17 @@ class Weather {
   Length? elevation;
 
   Provider weatherProvider;
-  bool daily;
+  bool isDaily;
 
   final MapLocation location;
 
-  Weather(this.weatherProvider, this.location, this.daily);
+  Weather(this.weatherProvider, this.location, this.isDaily);
 
   Future<void> updateInfo() async {
     if (await location.getLocationInfo()) {
       if (pressure == null || temperature == null || windSpeed == null || elevation == null) {
         final data = [location.coordinates.toString()];
-        if (daily) {
+        if (isDaily) {
           data.add("daily");
         }
         elevation = Length(weatherProvider, data, "Elevation", type: ProviderData.elevation);
@@ -31,9 +31,15 @@ class Weather {
         temperature = Temperature(weatherProvider, data, "Atm Temperature");
         windSpeed = Speed(weatherProvider, data, "Wind Speed", type: ProviderData.windSpeed);
       }
-      await pressure!.getValue();
-      await temperature!.getValue();
-      await windSpeed!.getValue();
+      await elevation!.getValue().whenComplete(() async {
+          await pressure!.getValue();
+          await temperature!.getValue();
+          await windSpeed!.getValue();
+      });
     }
+  }
+
+  Future<void> changeElevation(double value) async {
+    await weatherProvider.setValue(ProviderData.elevation, [], value);
   }
 }
