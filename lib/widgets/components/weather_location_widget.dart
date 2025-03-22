@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:vortex/app_style.dart';
@@ -63,16 +64,20 @@ class _WeatherLocationWidgetState extends State<WeatherLocationWidget> {
           builder: (c, setState) => AlertDialog(
             title: const Text("Details"),
             content: SizedBox(
-              height: MediaQuery.of(context).size.height * 0.3,
+              height: MediaQuery.of(context).size.height * 0.5,
               width: MediaQuery.of(context).size.width * 0.8,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(children: [
-                      Text("Wind Speed: ${windSpeed!.value}"),
-                      Icon(dir)
-                  ]),
+                  ListTile(
+                    title: Text("Wind Speed:"),
+                    trailing: SizedBox(
+                      width: 80,
+                      child: Row(children: [
+                          Text("${windSpeed!.value}"),
+                          Icon(dir)
+                  ]))),
 
                   ListTile(
                     title: Text("Required Annual Energy:"),
@@ -126,10 +131,10 @@ class _WeatherLocationWidgetState extends State<WeatherLocationWidget> {
                     )),
                   ),
 
-                  Text("Recommended Turbine:"),
-                  Text("Type: ${widget.turbine.type.toString().split('.')[1]}"),
-                  Text("Height: ${widget.turbine.height}"),
-                  Text("Diameter: ${widget.turbine.diameter}"),
+                  ListTile(title: Text("Recommended Turbine:")),
+                  ListTile(title: Text("Type: "), trailing: Text(widget.turbine.type.toString().split('.')[1])),
+                  ListTile(title: Text("Height: "), trailing: Text(widget.turbine.height.toString())),
+                  ListTile(title: Text("Diameter: "), trailing: Text(widget.turbine.diameter.toString())),
                 ],
               ),
             ),
