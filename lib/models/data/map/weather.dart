@@ -4,6 +4,7 @@ import 'package:vortex/models/data/properties/pressure.dart';
 import 'package:vortex/models/data/properties/temperature.dart';
 import 'package:vortex/models/data/properties/speed.dart';
 import 'package:vortex/models/providers/provider.dart';
+import 'package:vortex/models/providers/provider_data.dart';
 
 class Weather {
   Pressure? pressure;
@@ -25,10 +26,10 @@ class Weather {
         if (daily) {
           data.add("daily");
         }
-        elevation = Length(weatherProvider, data, "Elevation");
+        elevation = Length(weatherProvider, data, "Elevation", type: ProviderData.elevation);
         pressure = Pressure(weatherProvider, data, "Atm Pressure");
         temperature = Temperature(weatherProvider, data, "Atm Temperature");
-        windSpeed = Speed(weatherProvider, data, "Wind Speed");
+        windSpeed = Speed(weatherProvider, data, "Wind Speed", type: ProviderData.windSpeed);
       }
       await pressure!.getValue();
       await temperature!.getValue();

@@ -7,11 +7,11 @@ class Temperature extends Property {
   @override
   Stream<double>? get valueStream =>
   Stream.periodic(Duration(seconds: updateInterval), (_) => getValue())
-  .asyncMap((v) async => await v)
-  .asBroadcastStream();
+        .asyncMap((v) async => await v)
+        .asBroadcastStream();
 
   Temperature(super.provider, super.source, super.name,
-    {super.unit = PropertyUnit.kelvin});
+    {super.type = ProviderData.temperature, super.unit = PropertyUnit.kelvin});
 
   double _getStandardVal() {
     switch (unit) {
@@ -46,8 +46,7 @@ class Temperature extends Property {
 
   @override
   Future<double> getValue() async {
-    value = double.parse(
-      await provider.getValue(ProviderData.temperature, source) as String);
+    value = double.parse(await provider.getValue(type, source) as String);
 
     convertUnit(unit);
     value = double.parse(value.toStringAsFixed(2));

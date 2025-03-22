@@ -95,6 +95,7 @@ class _WeatherLocationWidgetState extends State<WeatherLocationWidget> {
                     )),
                   ),
 
+
                   Text("Recommended Turbine:"),
                   Text("Type: ${widget.turbine.type.toString().split('.')[1]}"),
                   Text("Height: ${widget.turbine.height}"),

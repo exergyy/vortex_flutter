@@ -18,7 +18,7 @@ class Power extends Property {
       }).asBroadcastStream();
 
   Power(super.provider, super.source, super.name,
-      {super.unit = PropertyUnit.kWatt, this.displayAvg = true});
+    {super.type = ProviderData.power, super.unit = PropertyUnit.kWatt, this.displayAvg = true});
 
   double _getStandardVal() {
     switch (unit) {
@@ -62,8 +62,7 @@ class Power extends Property {
 
   @override
   Future<double> getValue() async {
-    value = double.parse(
-        await provider.getValue(ProviderData.power, source) as String);
+    value = double.parse(await provider.getValue(type, source) as String);
     value = double.parse(value.toStringAsFixed(2));
 
     convertUnit(unit);

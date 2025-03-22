@@ -14,7 +14,7 @@ class Speed extends Property {
           .asBroadcastStream();
 
   Speed(super.provider, super.source, super.name,
-      {super.unit = PropertyUnit.kmHr});
+    {super.type = ProviderData.windSpeed, super.unit = PropertyUnit.kmHr});
 
   double _getStandardVal() {
     switch (unit) {
@@ -60,14 +60,12 @@ class Speed extends Property {
   @override
   Future<double> getValue() async {
     if (provider is WeatherProvider) {
-      var res =
-          await provider.getValue(ProviderData.windSpeed, source) as String;
+      var res = await provider.getValue(type, source) as String;
       var splitRes = res.split(",");
       value = double.parse(splitRes[0]);
       direction = double.parse(splitRes[1]);
     } else {
-      value = double.parse(
-          await provider.getValue(ProviderData.windSpeed, source) as String);
+      value = double.parse(await provider.getValue(type, source) as String);
     }
 
     convertUnit(unit);

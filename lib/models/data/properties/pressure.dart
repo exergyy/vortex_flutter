@@ -12,7 +12,7 @@ class Pressure extends Property {
   .asBroadcastStream();
 
   Pressure(super.provider, super.source, super.name,
-    {super.unit = PropertyUnit.bar});
+    {super.type = ProviderData.pressure, super.unit = PropertyUnit.bar});
 
   double _getStandardVal() {
     switch (unit) {
@@ -47,8 +47,7 @@ class Pressure extends Property {
 
   @override
   Future<double> getValue() async {
-    value = double.parse(
-      await provider.getValue(ProviderData.temperature, source) as String);
+    value = double.parse(await provider.getValue(type, source) as String);
 
     convertUnit(unit);
     value = double.parse(value.toStringAsFixed(2));
