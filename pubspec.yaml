@@ -7,13 +7,13 @@ environment:
   sdk: ^3.6.1
 
 dependencies:
+  http: any
+  isar: any
+  isar_flutter_libs: any
   latlong2: any
   geolocator: any
   osm_geocoder: any
   open_meteo: any
-
-  http: any
-
   fl_chart: any
   flutter_location_search: any
   flutter_map: any

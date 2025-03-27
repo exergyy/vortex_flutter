@@ -1,4 +1,4 @@
-package com.example.vortex
+package com.example.viewmodels
 
 import io.flutter.embedding.android.FlutterActivity
 
