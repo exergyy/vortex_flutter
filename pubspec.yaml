@@ -1,19 +1,19 @@
 name: vortex
-description: "A new Flutter project."
+description: "An app to monitor your turbine and pick the optimal one"
 publish_to: 'none'
 version: 0.1.0
 
 environment:
   sdk: ^3.6.1
 
-dependencies: 
+dependencies:
   latlong2: any
   geolocator: any
   osm_geocoder: any
   open_meteo: any
 
   http: any
-  
+
   fl_chart: any
   flutter_location_search: any
   flutter_map: any

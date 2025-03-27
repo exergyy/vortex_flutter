@@ -12,7 +12,9 @@ class PowerChart extends ChartData {
       Stream.periodic(Duration(seconds: updateInterval), (_) => updatePoint())
           .asyncMap((x) async => await x);
 
-  PowerChart(super.title, super.sources, {super.updateInterval});
+  PowerChart(super.title, super.sources, super.maxValue) {
+    minValue = maxValue / 2;
+  }
 
   @override
   Future<ChartPoint> updatePoint() async {
