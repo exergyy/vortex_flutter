@@ -7,7 +7,7 @@ import 'dart:math';
 class WeatherProvider extends Provider {
   final weather = WeatherApi(temperatureUnit: TemperatureUnit.celsius, windspeedUnit: WindspeedUnit.kmh);
 
-  double _elevation = 10;
+  double _elevation = 40;
   Map<String, Map<String, dynamic>>  requests = {};
 
   Future<Map<String, dynamic>> _getRequest(double x, double y, double elevation) async {

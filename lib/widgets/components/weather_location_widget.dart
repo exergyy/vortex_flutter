@@ -55,6 +55,8 @@ class _WeatherLocationWidgetState extends State<WeatherLocationWidget> {
   void _buildWindow(Speed? windSpeed, IconData dir, Length? elevation) {
     final energyController = TextEditingController(text: requiredEnergy.toString());
     final elevController = TextEditingController(text: widget.weather.elevation?.value.toString());
+    var typeStr = widget.turbine.type.toString().split('.')[1];
+    typeStr = typeStr.replaceFirst(typeStr[0], typeStr[0].toUpperCase());
 
     if (windSpeed != null && elevation != null) {
       showDialog(
@@ -83,6 +85,7 @@ class _WeatherLocationWidgetState extends State<WeatherLocationWidget> {
                     trailing:
                     SizedBox(
                       width: 50,
+                      height: 30,
                       child:
                       TextField(
                         controller: energyController,
@@ -108,6 +111,7 @@ class _WeatherLocationWidgetState extends State<WeatherLocationWidget> {
                     trailing:
                     SizedBox(
                       width: 50,
+                      height: 30,
                       child:
                       TextField(
                         controller: elevController,
@@ -130,8 +134,8 @@ class _WeatherLocationWidgetState extends State<WeatherLocationWidget> {
                     )),
                   ),
 
-                  ListTile(title: Text("Recommended Turbine:")),
-                  ListTile(title: Text("Type: "), trailing: Text(widget.turbine.type.toString().split('.')[1])),
+                  ListTile(title: Text("Recommended Turbine:", style: TextStyle(fontWeight: FontWeight.bold),)),
+                  ListTile(title: Text("Type: "), trailing: Text(typeStr)),
                   ListTile(title: Text("Height: "), trailing: Text(widget.turbine.height.toString())),
                   ListTile(title: Text("Diameter: "), trailing: Text(widget.turbine.diameter.toString())),
                 ],
