@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:vortex/models/data/properties/property.dart';
 import 'package:vortex/models/providers/provider_data.dart';
 import 'package:vortex/models/providers/weather_provider.dart';
@@ -63,6 +64,8 @@ class Speed extends Property {
 
   @override
   Future<double> getValue() async {
+    var sourceUnit = unit;
+
     if (provider is WeatherProvider) {
       var res = await provider.getValue(type, source) as String;
       var splitRes = res.split(",");
@@ -70,9 +73,13 @@ class Speed extends Property {
       direction = double.parse(splitRes[1]);
     } else {
       value = double.parse(await provider.getValue(type, source) as String);
+      sourceUnit = PropertyUnit.kmHr;
     }
 
-    setUnit(unit);
+    if (sourceUnit != unit) {
+      setUnit(unit);
+    }
+
     value = double.parse(value.toStringAsFixed(2));
 
     return value;
