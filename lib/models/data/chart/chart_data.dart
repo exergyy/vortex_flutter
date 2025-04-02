@@ -8,15 +8,16 @@ abstract class ChartData {
   final String title;
   int updateInterval;
 
-  double baseValue;
   double maxValue;
   double minValue;
 
-  Stream<ChartPoint>? point;
+  List<ChartPoint> points = [];
+  Stream<ChartPoint>? pointStream;
+  StreamController<List<ChartPoint>> pointsController = StreamController<List<ChartPoint>>.broadcast();
+
   List<Property> sources;
 
-  ChartData(this.title, this.sources, this.maxValue,
-    {this.updateInterval = 1, this.baseValue = 0, this.minValue = 0});
+  ChartData(this.title, this.sources, this.maxValue, {this.updateInterval = 1,  this.minValue = 0});
 
   Future<ChartPoint> updatePoint();
   bool isValueVisibleOnAxis(ChartDirection dir, double val);

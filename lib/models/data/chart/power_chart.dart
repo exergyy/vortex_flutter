@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:vortex/models/data/chart/chart_data.dart';
 import 'package:vortex/models/data/chart/chart_point.dart';
 import 'package:vortex/models/data/properties/power.dart';
@@ -8,12 +10,17 @@ class PowerChart extends ChartData {
   double _currentY = 0;
 
   @override
-  Stream<ChartPoint>? get point =>
+  Stream<ChartPoint>? get pointStream =>
       Stream.periodic(Duration(seconds: updateInterval), (_) => updatePoint())
           .asyncMap((x) async => await x);
 
   PowerChart(super.title, super.sources, super.maxValue) {
-    minValue = maxValue / 2;
+    // updateInterval = 240;
+    updateInterval = 1;
+    pointStream!.listen((p) {
+        points.add(p);
+        pointsController.sink.add(points);
+    });
   }
 
   @override
@@ -71,15 +78,6 @@ class PowerChart extends ChartData {
         return false;
     }
     return false;
-  }
-
-  int _getInterval() {
-    for (Property s in sources) {
-      if (s is Power) {
-        return s.updateInterval;
-      }
-    }
-    throw TypeError();
   }
 
   Future<double> _updateY() async {

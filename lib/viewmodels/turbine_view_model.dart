@@ -35,7 +35,6 @@ class TurbineViewModel {
 
     turbine.charts = [
       PowerChart("Power Output", [power], 5),
-      PowerChart("Power Output", [Power(esp32Provider, ["4", "5"], "Power")], 5),
     ];
   }
 }

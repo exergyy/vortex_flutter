@@ -2,7 +2,6 @@ import 'package:vortex/models/data/map/map_coordinates.dart';
 import 'package:vortex/models/providers/provider.dart';
 import 'package:open_meteo/open_meteo.dart';
 import 'package:vortex/models/providers/provider_data.dart';
-import 'dart:math';
 
 class WeatherProvider extends Provider {
   final weather = WeatherApi(temperatureUnit: TemperatureUnit.celsius, windspeedUnit: WindspeedUnit.kmh);

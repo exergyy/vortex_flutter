@@ -1,3 +1,5 @@
+import 'package:fl_chart/fl_chart.dart';
+
 class ChartPoint {
   final double x;
   final double y;
@@ -6,4 +8,6 @@ class ChartPoint {
 
   @override
   String toString() => "$x,$y";
+
+  FlSpot toFlSpot() => FlSpot(x, y);
 }

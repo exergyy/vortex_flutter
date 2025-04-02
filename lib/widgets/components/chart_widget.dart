@@ -4,6 +4,8 @@ import 'package:vortex/app_style.dart';
 import 'package:vortex/models/data/chart/chart_data.dart';
 import 'dart:async';
 
+import 'package:vortex/models/data/chart/chart_point.dart';
+
 class ChartWidget extends StatefulWidget {
   final ChartData data;
   final int visiblePointsCount;
@@ -15,36 +17,25 @@ class ChartWidget extends StatefulWidget {
 }
 
 class _ChartWidgetState extends State<ChartWidget> {
-  final StreamController<List<FlSpot>> _chartDataStream = StreamController();
-  final List<FlSpot> _chartData = [];
-
-  @override
-  void initState() {
-    super.initState();
-    widget.data.point!.listen((p) {
-        _chartData.add(FlSpot(p.x, p.y));
-        if (_chartData.length > widget.visiblePointsCount) _chartData.removeAt(0);
-        _chartDataStream.sink.add(_chartData);
-    });
+  Stream<List<FlSpot>> getDataStream(StreamController<List<ChartPoint>> controller) {
+    return controller.stream.map((l) => l.map((e) => e.toFlSpot()).toList());
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: _chartDataStream.stream,
+      stream: getDataStream(widget.data.pointsController),
       builder: (c, s) {
         if (s.hasError) {
           return Center(child: Text(s.error.toString()));
-        } else if (s.data == null || !s.hasData) {
-          return CircularProgressIndicator();
         }
 
         return SizedBox(
           height: MediaQuery.of(c).size.height * 0.5,
           child: LineChart(LineChartData(
-              minY: 0,
-              maxY: 5,
-              baselineY: 1,
+              minY: widget.data.minValue,
+              maxY: widget.data.maxValue,
+              baselineY: widget.data.baseValue,
               gridData: FlGridData(show: false),
               borderData: FlBorderData(
                 show: true,
@@ -52,10 +43,10 @@ class _ChartWidgetState extends State<ChartWidget> {
               titlesData: FlTitlesData(
                 show: true,
                 topTitles: AxisTitles(
-                  axisNameSize: 20,
+                  axisNameSize: 40,
                   axisNameWidget: Text(widget.data.title)),
                 rightTitles: AxisTitles(
-                  axisNameSize: 20,
+                  axisNameSize: 40,
                   sideTitles: SideTitles(showTitles: false)),
                 leftTitles: AxisTitles(
                   axisNameWidget: Text(widget.data.getAxisName(ChartDirection.left)),
@@ -77,13 +68,14 @@ class _ChartWidgetState extends State<ChartWidget> {
               )),
               lineBarsData: [
                 LineChartBarData(
-                  spots: s.data!,
+                  spots: s.data ?? [],
                   isCurved: true,
                   color: Theme.of(c).colorScheme.primary,
                   barWidth: 2,
-                  isStrokeCapRound: true,
+                  isStrokeCapRound: false,
+                  preventCurveOverdraw: true,
                   dotData: FlDotData(
-                    show: true,
+                    show: false,
                     getDotPainter: (p0, p1, p2, p3) => FlDotCirclePainter(
                       color: Theme.of(c).colorScheme.surface,
                       strokeColor: Theme.of(c).colorScheme.primary,
