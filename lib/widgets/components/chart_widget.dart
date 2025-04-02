@@ -35,7 +35,6 @@ class _ChartWidgetState extends State<ChartWidget> {
           child: LineChart(LineChartData(
               minY: widget.data.minValue,
               maxY: widget.data.maxValue,
-              baselineY: widget.data.baseValue,
               gridData: FlGridData(show: false),
               borderData: FlBorderData(
                 show: true,
