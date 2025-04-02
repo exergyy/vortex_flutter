@@ -17,6 +17,6 @@ abstract class Property {
 
   Property(this.provider, this.source, this.name, {this.type = ProviderData.none, this.unit = PropertyUnit.none});
 
-  void convertUnit(PropertyUnit to);
+  void setUnit(PropertyUnit to);
   Future<double> getValue();
 }

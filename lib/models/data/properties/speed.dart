@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:vortex/models/data/properties/property.dart';
 import 'package:vortex/models/providers/provider_data.dart';
 import 'package:vortex/models/providers/weather_provider.dart';
@@ -6,6 +8,7 @@ import 'dart:math';
 
 class Speed extends Property {
   double direction = 0;
+  double diameter;
 
   @override
   Stream<double>? get valueStream =>
@@ -14,16 +17,18 @@ class Speed extends Property {
           .asBroadcastStream();
 
   Speed(super.provider, super.source, super.name,
-    {super.type = ProviderData.windSpeed, super.unit = PropertyUnit.kmHr});
+    {super.type = ProviderData.windSpeed, super.unit = PropertyUnit.kmHr, this.diameter = 0});
 
   double _getStandardVal() {
     switch (unit) {
       case PropertyUnit.mS:
-        return value / pow(10, 3);
+        return value / (5 / 18);
       case PropertyUnit.ftS:
-        return value * 1.097;
+        return value / 1.097;
       case PropertyUnit.mpH:
-        return value * 1.609;
+        return value / 1.609;
+      case PropertyUnit.RPM:
+        return value / 8.8419;
       case PropertyUnit.kmHr:
       default:
         return value;
@@ -31,11 +36,10 @@ class Speed extends Property {
   }
 
   @override
-  void convertUnit(PropertyUnit to) {
+  void setUnit(PropertyUnit to) {
     switch (to) {
       case PropertyUnit.mS:
-      // wrong forgot converting Hr
-        value = _getStandardVal() * pow(10, 3);
+        value = _getStandardVal() * (5 / 18);
         unit = PropertyUnit.mS;
         break;
       case PropertyUnit.ftS:
@@ -47,7 +51,7 @@ class Speed extends Property {
         unit = PropertyUnit.mpH;
         break;
       case PropertyUnit.RPM:
-        value = _getStandardVal() * 8.8419;
+        value = _getStandardVal() * (1000 / (3.14 * diameter * 60));
         unit = PropertyUnit.RPM;
       case PropertyUnit.kmHr:
       default:
@@ -68,7 +72,7 @@ class Speed extends Property {
       value = double.parse(await provider.getValue(type, source) as String);
     }
 
-    convertUnit(unit);
+    setUnit(unit);
     value = double.parse(value.toStringAsFixed(2));
 
     return value;
