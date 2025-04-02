@@ -3,18 +3,29 @@ import 'dart:async';
 import 'package:vortex/models/data/chart/chart_data.dart';
 import 'package:vortex/models/data/chart/chart_point.dart';
 import 'package:vortex/models/data/properties/power.dart';
-import 'package:vortex/models/data/properties/property.dart';
+import 'package:vortex/models/providers/provider_data.dart';
 
 class PowerChart extends ChartData {
   double _currentX = 0;
   double _currentY = 0;
+  Power? _power;
 
   @override
   Stream<ChartPoint>? get pointStream =>
       Stream.periodic(Duration(seconds: updateInterval), (_) => updatePoint())
-          .asyncMap((x) async => await x);
+            .asyncMap((x) async => await x);
 
   PowerChart(super.title, super.sources, super.maxValue) {
+    for (var s in sources) {
+      if (s.type == ProviderData.power) {
+        _power = s as Power;
+      }
+    }
+
+    if (_power == null) {
+      throw TypeError();
+    }
+
     // updateInterval = 240;
     updateInterval = 1;
     pointStream!.listen((p) {
@@ -32,12 +43,7 @@ class PowerChart extends ChartData {
   String getAxisName(ChartDirection dir) {
     switch (dir) {
       case ChartDirection.left:
-        for (Property s in sources) {
-          if (s is Power) {
-            return "Power (${s.unit.toString().split(".")[1]})";
-          }
-        }
-        break;
+        return "Power (${_power?.unit.toString().split(".")[1]})";
       case ChartDirection.bottom:
         return "Time (Hr)";
       default:
@@ -81,13 +87,8 @@ class PowerChart extends ChartData {
   }
 
   Future<double> _updateY() async {
-    for (Property s in sources) {
-      if (s is Power) {
-        _currentY = await s.getValue();
-        return _currentY;
-      }
-    }
-    throw TypeError();
+    _currentY = await _power?.getValue() ?? 0;
+    return _currentY;
   }
 
   Future<double> _updateX() {
