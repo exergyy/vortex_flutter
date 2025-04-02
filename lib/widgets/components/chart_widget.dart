@@ -72,7 +72,6 @@ class _ChartWidgetState extends State<ChartWidget> {
                   color: Theme.of(c).colorScheme.primary,
                   barWidth: 2,
                   isStrokeCapRound: false,
-                  preventCurveOverdraw: true,
                   dotData: FlDotData(
                     show: false,
                     getDotPainter: (p0, p1, p2, p3) => FlDotCirclePainter(
