@@ -7,6 +7,7 @@ enum ChartDirection { left, right, top, bottom }
 abstract class ChartData {
   final String title;
   int updateInterval;
+  bool displayShadow = true;
 
   double maxValue;
   double minValue;

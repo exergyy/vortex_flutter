@@ -4,6 +4,7 @@ enum ProviderData {
   temperature,
   pressure,
   windSpeed,
+  motorSpeed,
   location,
   power,
   elevation,

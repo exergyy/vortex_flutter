@@ -35,7 +35,7 @@ class CpTsrChart extends ChartData {
         _windSpeed = s as Speed;
         break;
 
-        case ProviderData.speed:
+        case ProviderData.motorSpeed:
         _rotorSpeed = s as Speed;
         break;
 
@@ -48,11 +48,15 @@ class CpTsrChart extends ChartData {
       throw TypeError();
     }
 
-    updateInterval = 60;
+    //updateInterval = 60;
+    updateInterval = 2;
+    displayShadow = false;
 
     pointStream!.listen((p) {
-        points.add(p);
-        pointsController.sink.add(points);
+        if (!points.contains(p)) {
+          points.add(p);
+          pointsController.sink.add(points);
+        }
     });
   }
 
@@ -75,9 +79,9 @@ class CpTsrChart extends ChartData {
     if (isValueVisibleOnAxis(dir, val)) {
       switch (dir) {
         case ChartDirection.left:
-          return val.toStringAsFixed(0);
+          return val.toStringAsFixed(2);
         case ChartDirection.bottom:
-          return val.toStringAsFixed(0);
+          return val.toStringAsFixed(2);
         default:
           break;
       }
@@ -94,7 +98,7 @@ class CpTsrChart extends ChartData {
         }
         break;
       case ChartDirection.bottom:
-        if (val <= 10 && val >= 0 && val % 1 == 0) {
+        if (val <= 5 && val >= 0) {
           return true;
         }
         break;
@@ -111,6 +115,7 @@ class CpTsrChart extends ChartData {
 
   Future<double> _updateY() async {
     _airVelocity = await _windSpeed?.getValue() ?? 0;
+    _airVelocity = (5 / 18) * _airVelocity;
 
     final power = await _producedPower?.getValue() ?? 0;
 
@@ -135,6 +140,11 @@ class CpTsrChart extends ChartData {
    tipVelocity = tipVelocity * (3.14 * turbineDiameter / 60);
 
    _currentX = double.parse((tipVelocity / _airVelocity).toStringAsFixed(2));
+
+   if (_currentX == double.infinity) {
+     return 0;
+   }
+
    return _currentX;
   }
 

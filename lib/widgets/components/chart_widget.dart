@@ -31,7 +31,7 @@ class _ChartWidgetState extends State<ChartWidget> {
         }
 
         return SizedBox(
-          height: MediaQuery.of(c).size.height * 0.5,
+          height: MediaQuery.of(c).size.height * 0.8,
           child: LineChart(LineChartData(
               minY: widget.data.minValue,
               maxY: widget.data.maxValue,
@@ -51,6 +51,7 @@ class _ChartWidgetState extends State<ChartWidget> {
                   axisNameWidget: Text(widget.data.getAxisName(ChartDirection.left)),
                   sideTitles: SideTitles(
                     showTitles: true,
+                    reservedSize: 40,
                     getTitlesWidget: (value, meta) => Padding(padding:AppStyle.padding,
                       child: Text(widget.data.formatVisibleValue(ChartDirection.left, value))))),
                 bottomTitles: AxisTitles(
@@ -58,6 +59,8 @@ class _ChartWidgetState extends State<ChartWidget> {
                     child: Text(widget.data.getAxisName(ChartDirection.bottom))),
                   sideTitles: SideTitles(
                     showTitles: true,
+                    reservedSize: 40,
+                    interval: 0.1,
                     getTitlesWidget: (value, meta) => Padding(padding:AppStyle.padding,
                       child: Text(widget.data.formatVisibleValue(ChartDirection.bottom, value)))))),
               lineTouchData: LineTouchData(
@@ -68,7 +71,7 @@ class _ChartWidgetState extends State<ChartWidget> {
               lineBarsData: [
                 LineChartBarData(
                   spots: s.data ?? [],
-                  isCurved: true,
+                  isCurved: widget.data.displayShadow,
                   color: Theme.of(c).colorScheme.primary,
                   barWidth: 2,
                   isStrokeCapRound: false,
@@ -82,7 +85,7 @@ class _ChartWidgetState extends State<ChartWidget> {
                     ),
                   ),
                   belowBarData: BarAreaData(
-                    show: true,
+                    show: widget.data.displayShadow,
                     color: Theme.of(c).colorScheme.secondary.withAlpha(40),
                   ),
                 )

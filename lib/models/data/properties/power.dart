@@ -46,7 +46,7 @@ class Power extends Property {
   }
 
   @override
-  void convertUnit(PropertyUnit to) {
+  void setUnit(PropertyUnit to) {
     switch (to) {
       case PropertyUnit.hp:
         value = _getStandardVal() * 1.341;
@@ -65,7 +65,7 @@ class Power extends Property {
     value = double.parse(await provider.getValue(type, source) as String);
     value = double.parse(value.toStringAsFixed(2));
 
-    convertUnit(unit);
+    setUnit(unit);
     return value;
   }
 

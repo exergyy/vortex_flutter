@@ -26,7 +26,7 @@ class Temperature extends Property {
   }
 
   @override
-  void convertUnit(PropertyUnit to) {
+  void setUnit(PropertyUnit to) {
     switch (to) {
       case PropertyUnit.celisus:
       value = _getStandardVal() + 273.15;
@@ -48,7 +48,7 @@ class Temperature extends Property {
   Future<double> getValue() async {
     value = double.parse(await provider.getValue(type, source) as String);
 
-    convertUnit(unit);
+    setUnit(unit);
     value = double.parse(value.toStringAsFixed(2));
     return value;
   }

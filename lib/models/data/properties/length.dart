@@ -18,7 +18,7 @@ class Length extends Property {
   }
 
   @override
-  void convertUnit(PropertyUnit to) {
+  void setUnit(PropertyUnit to) {
     switch (to) {
       case PropertyUnit.ft:
         value = _getStandardVal() / 0.3048;
@@ -37,7 +37,7 @@ class Length extends Property {
     value = double.parse(await provider.getValue(type, source) as String);
     value = double.parse(value.toStringAsFixed(2));
 
-    convertUnit(unit);
+    setUnit(unit);
     return value;
   }
 

@@ -27,7 +27,7 @@ class Pressure extends Property {
   }
 
   @override
-  void convertUnit(PropertyUnit to) {
+  void setUnit(PropertyUnit to) {
     switch (to) {
       case PropertyUnit.kPa:
       value = _getStandardVal() * pow(10, 3);
@@ -49,7 +49,7 @@ class Pressure extends Property {
   Future<double> getValue() async {
     value = double.parse(await provider.getValue(type, source) as String);
 
-    convertUnit(unit);
+    setUnit(unit);
     value = double.parse(value.toStringAsFixed(2));
 
     return value;

@@ -57,7 +57,7 @@ class PowerChart extends ChartData {
     if (isValueVisibleOnAxis(dir, val)) {
       switch (dir) {
         case ChartDirection.left:
-          return val.toString();
+          return val.toStringAsFixed(0);
         case ChartDirection.bottom:
           return (val / 3600).toStringAsFixed(0);
         default:

@@ -73,11 +73,6 @@ class Speed extends Property {
       direction = double.parse(splitRes[1]);
     } else {
       value = double.parse(await provider.getValue(type, source) as String);
-      sourceUnit = PropertyUnit.kmHr;
-    }
-
-    if (sourceUnit != unit) {
-      setUnit(unit);
     }
 
     value = double.parse(value.toStringAsFixed(2));
